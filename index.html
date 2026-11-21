@@ -68,7 +68,7 @@
           <span class="brand-line accent">VLUTE</span>
         </h1>
         <p class="brand-meaning" id="brand-meaning">
-          <span class="meaning-full">
+          <span class="meaning-full is-on">
             <strong>ST VLUTE</strong>
             =
             Students Vinh Long University of Technology and Engineering
@@ -224,7 +224,7 @@
               </li>
               <li>
                 <i class="ph ph-seal-check" aria-hidden="true"></i>
-                <span>Làm theo video cấp chứng chỉ bên dưới.</span>
+                <span>Chọn 1 phương án ở <a href="#ios-guide">hướng dẫn iOS</a> rồi làm đúng bước.</span>
               </li>
               <li>
                 <i class="ph ph-sign-in" aria-hidden="true"></i>
@@ -240,20 +240,147 @@
       <div class="section-head reveal">
         <p class="section-kicker">
           <i class="ph ph-device-mobile" aria-hidden="true"></i>
-          iOS
+          iOS · Cập nhật 2026
         </p>
-        <h2>Hướng dẫn cài &amp; cấp chứng chỉ</h2>
-        <p>Video đầy đủ các bước cơ bản cho một app iOS đơn giản.</p>
+        <h2>Cài IPA trên iPhone</h2>
+        <p>Lifetimeetime cert / auto-renew — chọn 1 phương án, làm đúng từng bước.</p>
       </div>
 
-      <a class="video-card reveal" href="https://youtu.be/WMdaxojL4m4?si=0cXPruxI6c-fnmc2" target="_blank" rel="noopener noreferrer">
-        <img src="https://img.youtube.com/vi/WMdaxojL4m4/hqdefault.jpg" alt="Xem video hướng dẫn cài iOS trên YouTube" width="480" height="360" loading="lazy">
-        <span class="video-veil" aria-hidden="true"></span>
-        <span class="play-badge">
-          <i class="ph-fill ph-play" aria-hidden="true"></i>
-          <span>Xem trên YouTube</span>
-        </span>
-      </a>
+      <p class="ios-note reveal">
+        <i class="ph ph-warning-circle" aria-hidden="true"></i>
+        Chỉ tham khảo kỹ thuật. Tự bảo đảm quyền dùng IPA. Cert bên thứ ba có thể bị thu hồi bất cứ lúc nào.
+      </p>
+
+      <div class="pick-table reveal" role="region" aria-label="Chọn phương án nhanh">
+        <div class="pick-row pick-head">
+          <span>Phương án</span>
+          <span>Máy tính</span>
+          <span>Cert</span>
+          <span>Hiệu lực</span>
+        </div>
+        <div class="pick-row">
+          <span><strong>TrollStore</strong></span>
+          <span>Lần đầu</span>
+          <span>Không</span>
+          <span>Vĩnh viễn</span>
+        </div>
+        <div class="pick-row">
+          <span><strong>ESign</strong></span>
+          <span>Không</span>
+          <span>Cần .p12</span>
+          <span>Theo cert</span>
+        </div>
+        <div class="pick-row">
+          <span><strong>AltStore</strong></span>
+          <span>Chạy nền</span>
+          <span>Apple ID</span>
+          <span>7 ngày</span>
+        </div>
+        <div class="pick-row">
+          <span><strong>SideStore</strong></span>
+          <span>Lần đầu</span>
+          <span>Apple ID</span>
+          <span>7 ngày</span>
+        </div>
+      </div>
+
+      <p class="ios-tip reveal">
+        <i class="ph ph-lightbulb" aria-hidden="true"></i>
+        iOS ≤ 17.0 → ưu tiên <strong>TrollStore</strong>. Không máy tính → <strong>ESign</strong>. Muốn ổn định + có PC → <strong>AltStore</strong>.
+      </p>
+
+      <div class="method-list">
+        <article class="method-card reveal" id="method-trollstore">
+          <header class="method-head">
+            <span class="method-badge forever"><i class="ph-fill ph-infinity" aria-hidden="true"></i> Lifetime</span>
+            <h3>1. TrollStore</h3>
+            <p>iOS 14.0b2–16.6.1 · 16.7 RC · 17.0 — <em>không hỗ trợ 16.7.x / ≥17.0.1</em></p>
+          </header>
+          <div class="method-links">
+            <a href="https://github.com/opa334/TrollStore" target="_blank" rel="noopener noreferrer"><i class="ph ph-github-logo" aria-hidden="true"></i> GitHub</a>
+            <a href="https://ios.cfw.guide/installing-trollstore" target="_blank" rel="noopener noreferrer"><i class="ph ph-book-open" aria-hidden="true"></i> Guide</a>
+          </div>
+          <ol class="steps">
+            <li><strong>Bước 1:</strong> Máy tính tải <a href="https://github.com/opa334/TrollStore" target="_blank" rel="noopener noreferrer">TrollRestore</a> (Win/Mac).</li>
+            <li><strong>Bước 2:</strong> iPhone tắt Find My · App Store cài app <strong>Tips</strong>.</li>
+            <li><strong>Bước 3:</strong> Cắm USB → mở TrollRestore → target gõ <code>Tips</code> → chạy.</li>
+            <li><strong>Bước 4:</strong> Máy reboot → mở Tips → bấm <strong>Install TrollStore</strong>.</li>
+            <li><strong>Bước 5:</strong> TrollStore → Settings → Install Persistence Helper → chọn Tips.</li>
+            <li><strong>Bước 6:</strong> Mở IPA trong TrollStore → bấm <strong>+</strong> → cài xong.</li>
+          </ol>
+        </article>
+
+        <article class="method-card reveal" id="method-esign" data-delay="40">
+          <header class="method-head">
+            <span class="method-badge cert"><i class="ph-fill ph-certificate" aria-hidden="true"></i> Cert</span>
+            <h3>2. ESign / 易能签</h3>
+            <p>iOS 16+ · không cần PC · bắt buộc có <code>.p12</code> + <code>.mobileprovision</code></p>
+          </header>
+          <div class="method-links">
+            <a href="https://www.enqapp.com" target="_blank" rel="noopener noreferrer"><i class="ph ph-globe" aria-hidden="true"></i> enqapp.com</a>
+          </div>
+          <ol class="steps">
+            <li><strong>Bước 1:</strong> Safari mở <a href="https://www.enqapp.com" target="_blank" rel="noopener noreferrer">enqapp.com</a> → cài ESign.</li>
+            <li><strong>Bước 2:</strong> Cài đặt → Cài đặt chung → VPN &amp; Quản lý thiết bị → <strong>Tin cậy</strong>.</li>
+            <li><strong>Bước 3:</strong> ESign → nhập <code>.p12</code> + <code>.mobileprovision</code> → gõ mật khẩu cert.</li>
+            <li><strong>Bước 4:</strong> Import IPA → chọn cert → bấm <strong>Signature</strong>.</li>
+            <li><strong>Bước 5:</strong> Bấm <strong>Install</strong> → vào VPN &amp; Quản lý thiết bị → Tin cậy lại.</li>
+          </ol>
+        </article>
+
+        <article class="method-card reveal" id="method-altstore" data-delay="80">
+          <header class="method-head">
+            <span class="method-badge renew"><i class="ph-fill ph-arrows-clockwise" aria-hidden="true"></i> Auto renew</span>
+            <h3>3. AltStore</h3>
+            <p>Apple ID miễn phí · 7 ngày · PC phải chạy AltServer + cùng WiFi</p>
+          </header>
+          <div class="method-links">
+            <a href="https://altstore.io" target="_blank" rel="noopener noreferrer"><i class="ph ph-globe" aria-hidden="true"></i> altstore.io</a>
+          </div>
+          <ol class="steps">
+            <li><strong>Bước 1:</strong> PC tải AltServer từ <a href="https://altstore.io" target="_blank" rel="noopener noreferrer">altstore.io</a> (Win: cài iTunes bản Apple, không dùng Store).</li>
+            <li><strong>Bước 2:</strong> Cắm USB → AltServer → <strong>Install AltStore</strong> → nhập Apple ID.</li>
+            <li><strong>Bước 3:</strong> iPhone: Cài đặt → Cài đặt chung → VPN &amp; Quản lý thiết bị → Tin cậy.</li>
+            <li><strong>Bước 4:</strong> AltStore → Settings → Refresh Apps → chọn <strong>Always</strong>.</li>
+            <li><strong>Bước 5:</strong> PC AltServer → bật <strong>Enable WiFi Sync</strong>.</li>
+            <li><strong>Bước 6:</strong> Gửi IPA vào iPhone → Share → AltStore → cài.</li>
+          </ol>
+        </article>
+
+        <article class="method-card reveal" id="method-sidestore" data-delay="120">
+          <header class="method-head">
+            <span class="method-badge renew"><i class="ph-fill ph-arrows-clockwise" aria-hidden="true"></i> Auto renew</span>
+            <h3>4. SideStore</h3>
+            <p>iOS 15–18+ · lần đầu cần PC · sau đó renew qua LocalDevVPN</p>
+          </header>
+          <div class="method-links">
+            <a href="https://docs.sidestore.io" target="_blank" rel="noopener noreferrer"><i class="ph ph-book-open" aria-hidden="true"></i> docs.sidestore.io</a>
+            <a href="https://docs.sidestore.io/zh/docs/installation/install" target="_blank" rel="noopener noreferrer"><i class="ph ph-translate" aria-hidden="true"></i> Cài đặt</a>
+          </div>
+          <ol class="steps">
+            <li><strong>Bước 1:</strong> PC dùng iloader cài SideStore lên iPhone (theo docs).</li>
+            <li><strong>Bước 2:</strong> iPhone: VPN &amp; Quản lý thiết bị → Tin cậy.</li>
+            <li><strong>Bước 3:</strong> Mở LocalDevVPN → bấm <strong>Connect</strong>.</li>
+            <li><strong>Bước 4:</strong> SideStore → đăng nhập Apple ID → My Apps → bấm <strong>7 DAYS</strong> để refresh.</li>
+            <li><strong>Bước 5:</strong> Giữ LocalDevVPN Connected → SideStore tự renew nền.</li>
+          </ol>
+        </article>
+      </div>
+
+      <div class="video-block reveal">
+        <h3 class="video-title">
+          <i class="ph ph-youtube-logo" aria-hidden="true"></i>
+          Video nhanh (cert cơ bản)
+        </h3>
+        <a class="video-card" href="https://youtu.be/WMdaxojL4m4?si=0cXPruxI6c-fnmc2" target="_blank" rel="noopener noreferrer">
+          <img src="https://img.youtube.com/vi/WMdaxojL4m4/hqdefault.jpg" alt="Xem video hướng dẫn cài iOS trên YouTube" width="480" height="360" loading="lazy">
+          <span class="video-veil" aria-hidden="true"></span>
+          <span class="play-badge">
+            <i class="ph-fill ph-play" aria-hidden="true"></i>
+            <span>Xem YouTube</span>
+          </span>
+        </a>
+      </div>
     </section>
   </main>
 

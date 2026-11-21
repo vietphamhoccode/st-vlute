@@ -274,42 +274,43 @@
     window.addEventListener("resize", update, { passive: true });
   }
 
-  /* ---------- Students <-> ST morph ---------- */
+  /* ---------- Students <-> ST morph (loop forever) ---------- */
   function initStMorph() {
     var morph = document.getElementById("st-morph");
     var meaning = document.querySelector(".meaning-full");
     if (!morph) return;
 
+    // Full name luôn hiện
+    if (meaning) meaning.classList.add("is-on");
+
     if (reduceMotion) {
       morph.classList.add("is-compact");
-      if (meaning) meaning.classList.add("is-on");
       return;
     }
 
     var expanded = true;
     morph.classList.add("is-expanding");
-    if (meaning) meaning.classList.add("is-on");
 
     function cycle() {
       if (expanded) {
-        // Students -> ST (rút gọn)
         morph.classList.remove("is-expanding");
         morph.classList.add("is-compact");
         expanded = false;
       } else {
-        // ST -> Students (chạy ra)
         morph.classList.remove("is-compact");
         morph.classList.add("is-expanding");
         expanded = true;
       }
     }
 
-    // Start with Students, then loop compact/expand
-    window.setTimeout(function loop() {
+    function loop() {
       cycle();
-      var hold = expanded ? 2800 : 2000;
+      // Students hiện lâu hơn một chút, ST cũng giữ rõ
+      var hold = expanded ? 3200 : 2400;
       window.setTimeout(loop, hold);
-    }, 1600);
+    }
+
+    window.setTimeout(loop, 1400);
   }
 
   /* ---------- Boot ---------- */
