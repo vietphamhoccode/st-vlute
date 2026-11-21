@@ -262,29 +262,43 @@
     host.innerHTML = html;
   }
 
-  /* ---------- Free-roam character theater (walk / climb / chat / think) ---------- */
+  /* ---------- Independent living characters (walk / climb / chat / think) ---------- */
   function initCharacterTheater() {
     if (reduceMotion) return;
     var stage = document.querySelector(".tech-stage");
     if (!stage) return;
 
+    var names = [];
     var actors = {};
     var nodes = stage.querySelectorAll("[data-actor]");
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
-      actors[el.getAttribute("data-actor")] = {
+      var name = el.getAttribute("data-actor");
+      names.push(name);
+      actors[name] = {
+        name: name,
         el: el,
-        x: 50,
-        y: 60,
+        x: parseFloat(el.style.left) || 50,
+        y: parseFloat(el.style.top) || 60,
+        busy: false,
+        chatting: false,
         sayEl: el.querySelector('[data-bubble="say"]'),
         thinkEl: el.querySelector('[data-bubble="think"]')
       };
     }
     if (!actors.student || !actors.engineer || !actors.bot) return;
 
-    var groundY = lowPower ? [58, 72] : [52, 78];
-    var climbY = lowPower ? [28, 42] : [18, 40];
-    var moveMs = lowPower ? 1600 : 2200;
+    var groundY = lowPower ? [58, 74] : [50, 80];
+    var climbSpots = [
+      { x: 35, y: 48 },
+      { x: 63, y: 45 },
+      { x: 47, y: 46 },
+      { x: 53, y: 52 },
+      { x: 50, y: 40 },
+      { x: 22, y: 36 },
+      { x: 78, y: 34 }
+    ];
+    var chatLock = null;
 
     function wait(ms) {
       return new Promise(function (resolve) {
@@ -300,48 +314,59 @@
       return a + Math.random() * (b - a);
     }
 
-    function clearBubbles(name) {
-      var list = name ? [name] : Object.keys(actors);
-      for (var i = 0; i < list.length; i++) {
-        var a = actors[list[i]];
-        if (!a) continue;
-        if (a.sayEl) {
-          a.sayEl.hidden = true;
-          a.sayEl.classList.remove("is-on");
-          a.sayEl.textContent = "";
-        }
-        if (a.thinkEl) {
-          a.thinkEl.hidden = true;
-          a.thinkEl.classList.remove("is-on");
-          a.thinkEl.textContent = "";
-        }
-        a.el.classList.remove("is-acting");
-      }
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    function move(name, x, y, opts) {
+    function dist(a, b) {
+      var dx = a.x - b.x;
+      var dy = a.y - b.y;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function clearBubble(a) {
+      if (a.sayEl) {
+        a.sayEl.hidden = true;
+        a.sayEl.classList.remove("is-on");
+        a.sayEl.textContent = "";
+      }
+      if (a.thinkEl) {
+        a.thinkEl.hidden = true;
+        a.thinkEl.classList.remove("is-on");
+        a.thinkEl.textContent = "";
+      }
+      a.el.classList.remove("is-acting");
+    }
+
+    function travelTime(a, x, y) {
+      var d = Math.sqrt(Math.pow(x - a.x, 2) + Math.pow(y - a.y, 2));
+      var speed = a.name === "bot" ? (lowPower ? 28 : 34) : lowPower ? 22 : 26;
+      return clamp(Math.round((d / speed) * 1000), lowPower ? 900 : 1200, lowPower ? 2400 : 3200);
+    }
+
+    function moveTo(a, x, y, opts) {
       opts = opts || {};
-      var a = actors[name];
-      if (!a) return Promise.resolve();
+      x = clamp(x, 5, 95);
+      y = clamp(y, 16, 84);
       var faceLeft = opts.faceLeft;
-      if (faceLeft === undefined) faceLeft = x < a.x;
-      a.x = clamp(x, 6, 94);
-      a.y = clamp(y, 14, 82);
+      if (faceLeft === undefined) faceLeft = x < a.x - 0.8;
+      var duration = opts.duration != null ? opts.duration : travelTime(a, x, y);
+      a.x = x;
+      a.y = y;
       a.el.classList.toggle("face-left", !!faceLeft);
       a.el.classList.toggle("is-climbing", !!opts.climb);
       a.el.classList.add("is-walking");
-      a.el.style.left = a.x + "%";
-      a.el.style.top = a.y + "%";
-      return wait(opts.duration || moveMs).then(function () {
+      a.el.style.transitionDuration = duration + "ms";
+      a.el.style.left = x + "%";
+      a.el.style.top = y + "%";
+      return wait(duration).then(function () {
         a.el.classList.remove("is-walking");
         if (!opts.keepClimb) a.el.classList.remove("is-climbing");
       });
     }
 
-    function speak(name, type, text, hold) {
-      var a = actors[name];
-      if (!a) return Promise.resolve();
-      clearBubbles(name);
+    function speak(a, type, text, hold) {
+      clearBubble(a);
       var bubble = type === "think" ? a.thinkEl : a.sayEl;
       if (!bubble) return Promise.resolve();
       a.el.classList.add("is-acting");
@@ -349,23 +374,11 @@
       bubble.textContent = text;
       void bubble.offsetWidth;
       bubble.classList.add("is-on");
-      return wait(hold || 2000).then(function () {
+      return wait(hold || (type === "think" ? 2000 : 1700)).then(function () {
         bubble.classList.remove("is-on");
         bubble.hidden = true;
         a.el.classList.remove("is-acting");
       });
-    }
-
-    function roam(name) {
-      var x = rand(8, 92);
-      var y = rand(groundY[0], groundY[1]);
-      return move(name, x, y, { duration: moveMs });
-    }
-
-    function climb(name) {
-      var x = rand(30, 70);
-      var y = rand(climbY[0], climbY[1]);
-      return move(name, x, y, { climb: true, keepClimb: true, duration: moveMs + 400 });
     }
 
     var lines = {
@@ -374,13 +387,17 @@
           "Lịch học hôm nay ra sao nhỉ…",
           "Mình nên xem điểm thành phần.",
           "ST VLUTE tiện thật…",
-          "Nếu trễ tiết thì sao ta?"
+          "Nếu trễ tiết thì sao ta?",
+          "Đi ngang node này rồi…",
+          "Học kỳ mới mình sẵn sàng!"
         ],
         say: [
           "Cho mình xin thời khóa biểu!",
           "Cảm ơn AI Helper!",
           "App mượt quá anh ơi.",
-          "Mình sẵn sàng học kỳ mới!"
+          "Mình sẵn sàng học kỳ mới!",
+          "Ê, đi cùng mình một đoạn!",
+          "API còn sống chứ?"
         ]
       },
       engineer: {
@@ -388,13 +405,17 @@
           "API nhà trường ổn không?",
           "Công nghệ phải phục vụ con người.",
           "Tối ưu cache tiếp nào…",
-          "CNTT = kết nối & sáng tạo."
+          "CNTT = kết nối & sáng tạo.",
+          "Wire này latency hơi cao.",
+          "Kiểm tra node phía trên…"
         ],
         say: [
           "API VLUTE đang green.",
           "Cache local đã bật.",
           "ST VLUTE = Students × VLUTE.",
-          "Leo lên node trên kiểm tra wire!"
+          "Leo lên node kiểm tra wire!",
+          "Đồng bộ xong rồi đó.",
+          "Theo mình, đi hướng này!"
         ]
       },
       bot: {
@@ -402,120 +423,152 @@
           "Mình ý thức nhiệm vụ hỗ trợ sinh viên.",
           "Đang quét dữ liệu GPA…",
           "Con người + AI = team.",
-          "Ping… pong… sync ok."
+          "Ping… pong… sync ok.",
+          "Quét toàn board… 3 node online.",
+          "Mình có thể bay ngang wire."
         ],
         say: [
           "Mình đồng bộ giúp bạn!",
           "Timeline đã sẵn sàng.",
           "Team VLUTE online!",
-          "Leo chip trung tâm nào!"
+          "Leo lên node trung tâm nào!",
+          "Hello humans!",
+          "Mình đi tuần hệ thống đây."
         ]
       }
     };
 
-    function pick(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    async function meetAndTalk(a, b) {
-      var mx = rand(35, 65);
-      var my = rand(groundY[0], Math.min(groundY[1], 70));
-      await Promise.all([
-        move(a, mx - 7, my, { faceLeft: false }),
-        move(b, mx + 7, my, { faceLeft: true })
-      ]);
-      await speak(a, "say", pick(lines[a].say), 1700);
-      await speak(b, "say", pick(lines[b].say), 1700);
-      if (Math.random() > 0.45) {
-        await speak(a, "think", pick(lines[a].think), 1600);
+    function wander(a) {
+      var x = rand(6, 94);
+      // prefer crossing the screen left↔right
+      if (Math.random() > 0.35) {
+        x = a.x < 50 ? rand(62, 94) : rand(6, 38);
       }
-    }
-
-    async function climbTogether() {
-      await Promise.all([climb("bot"), climb("engineer"), climb("student")]);
-      await speak("bot", "say", "Leo lên chip VLUTE·IT!", 1600);
-      await speak("engineer", "think", "Từ trên cao nhìn toàn hệ thống…", 1700);
-      await speak("student", "say", "Wow, nhìn toàn board!", 1500);
-      await Promise.all([
-        move("bot", rand(20, 80), rand(groundY[0], groundY[1]), {}),
-        move("engineer", rand(20, 80), rand(groundY[0], groundY[1]), {}),
-        move("student", rand(20, 80), rand(groundY[0], groundY[1]), {})
-      ]);
-    }
-
-    async function soloThought(name) {
-      if (Math.random() > 0.55) await climb(name);
-      else await roam(name);
-      await speak(name, "think", pick(lines[name].think), 1800);
-      if (actors[name].el.classList.contains("is-climbing")) {
-        await move(name, rand(12, 88), rand(groundY[0], groundY[1]), {});
+      var y = rand(groundY[0], groundY[1]);
+      if (a.name === "bot" && Math.random() > 0.55) {
+        y = rand(28, 58);
       }
+      return moveTo(a, x, y, {});
     }
 
-    async function freeWander() {
-      await Promise.all([roam("student"), roam("engineer"), roam("bot")]);
-      if (Math.random() > 0.5) await climb("bot");
-      var who = pick(["student", "engineer", "bot"]);
-      await speak(who, "think", pick(lines[who].think), 1500);
+    function climb(a) {
+      var spot = pick(climbSpots);
+      return moveTo(a, spot.x + rand(-4, 4), spot.y + rand(-3, 3), {
+        climb: true,
+        keepClimb: true
+      }).then(function () {
+        return wait(rand(700, 1400));
+      }).then(function () {
+        if (Math.random() > 0.5) {
+          return speak(a, "think", pick(lines[a.name].think), 1600);
+        }
+      }).then(function () {
+        return moveTo(a, rand(10, 90), rand(groundY[0], groundY[1]), {});
+      });
     }
 
-    var beats = [
-      function () { return soloThought("student"); },
-      function () { return meetAndTalk("student", "bot"); },
-      function () { return meetAndTalk("student", "engineer"); },
-      function () { return climbTogether(); },
-      function () { return meetAndTalk("engineer", "bot"); },
-      function () { return soloThought("engineer"); },
-      function () { return soloThought("bot"); },
-      function () { return freeWander(); },
-      async function () {
-        await Promise.all([roam("student"), roam("engineer"), roam("bot")]);
-        await speak("bot", "say", pick(lines.bot.say), 1500);
-        await speak("student", "say", pick(lines.student.say), 1500);
-        await speak("engineer", "say", pick(lines.engineer.say), 1500);
+    function thinkAlone(a) {
+      return speak(a, "think", pick(lines[a.name].think), rand(1600, 2400));
+    }
+
+    function findNearby(a, maxD) {
+      var best = null;
+      var bestD = maxD || 22;
+      for (var i = 0; i < names.length; i++) {
+        var other = actors[names[i]];
+        if (!other || other.name === a.name) continue;
+        if (other.busy || other.chatting) continue;
+        var d = dist(a, other);
+        if (d < bestD) {
+          bestD = d;
+          best = other;
+        }
       }
-    ];
+      return best;
+    }
 
-    Object.keys(actors).forEach(function (key) {
-      actors[key].el.style.transitionDuration = moveMs + "ms";
-    });
+    async function chatWith(a, b) {
+      if (chatLock || a.chatting || b.chatting || b.busy) return false;
+      chatLock = a.name + "+" + b.name;
+      a.chatting = true;
+      b.chatting = true;
+      b.busy = true;
+      try {
+        var midX = (a.x + b.x) / 2;
+        var midY = clamp((a.y + b.y) / 2, groundY[0], Math.min(groundY[1], 72));
+        await Promise.all([
+          moveTo(a, midX - 6, midY, { faceLeft: false }),
+          moveTo(b, midX + 6, midY, { faceLeft: true })
+        ]);
+        await speak(a, "say", pick(lines[a.name].say), 1500);
+        await speak(b, "say", pick(lines[b.name].say), 1500);
+        if (Math.random() > 0.4) {
+          await speak(a, "think", pick(lines[a.name].think), 1400);
+        }
+      } finally {
+        a.chatting = false;
+        b.chatting = false;
+        b.busy = false;
+        chatLock = null;
+      }
+      return true;
+    }
 
-    var running = true;
-    async function loop() {
-      var order = beats.slice();
-      while (running) {
+    async function lifeLoop(a) {
+      // stagger start so they feel independent
+      await wait(a.name === "student" ? 200 : a.name === "engineer" ? 700 : 1100);
+      while (true) {
         if (document.hidden) {
-          clearBubbles();
-          await wait(900);
+          clearBubble(a);
+          await wait(800);
           continue;
         }
-        // shuffle lightly
-        for (var i = order.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var tmp = order[i];
-          order[i] = order[j];
-          order[j] = tmp;
+        if (a.busy || a.chatting) {
+          await wait(300);
+          continue;
         }
-        for (var k = 0; k < order.length; k++) {
-          if (document.hidden) break;
-          try {
-            await order[k]();
-          } catch (e) {}
-          clearBubbles();
-          await wait(500);
+        a.busy = true;
+        try {
+          var roll = Math.random();
+          var nearby = findNearby(a, 26);
+          if (nearby && roll < 0.34) {
+            await chatWith(a, nearby);
+          } else if (roll < 0.55) {
+            await wander(a);
+          } else if (roll < 0.78) {
+            await climb(a);
+          } else if (roll < 0.9) {
+            await wander(a);
+            await thinkAlone(a);
+          } else {
+            await thinkAlone(a);
+            await wander(a);
+          }
+          // small pause so motion breathes
+          await wait(rand(280, 900));
+        } catch (e) {
+        } finally {
+          a.busy = false;
         }
       }
     }
 
+    // place them apart, then each lives independently
+    moveTo(actors.student, 12, 70, { duration: 20 });
+    moveTo(actors.engineer, 86, 64, { duration: 20, faceLeft: true });
+    moveTo(actors.bot, 48, 42, { duration: 20, climb: true, keepClimb: true });
+
     document.addEventListener("visibilitychange", function () {
-      if (document.hidden) clearBubbles();
+      if (document.hidden) {
+        names.forEach(function (n) {
+          clearBubble(actors[n]);
+        });
+      }
     });
 
-    // start scattered
-    move("student", 14, 70, { duration: 10 });
-    move("engineer", 82, 62, { duration: 10, faceLeft: true });
-    move("bot", 50, 36, { duration: 10, climb: true, keepClimb: true });
-    loop();
+    lifeLoop(actors.student);
+    lifeLoop(actors.engineer);
+    lifeLoop(actors.bot);
   }
 
   function boot() {
