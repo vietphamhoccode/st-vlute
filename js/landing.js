@@ -159,103 +159,6 @@
     });
   }
 
-  /* ---------- 3D logo: CSS idle + rAF only while interacting ---------- */
-  function initLogo3D() {
-    var scene = document.getElementById("logo-scene");
-    var rig = document.getElementById("logo-rig");
-    if (!scene || !rig || reduceMotion) return;
-
-    var targetX = 0;
-    var targetY = 0;
-    var curX = 0;
-    var curY = 0;
-    var maxTilt = lowPower ? 10 : 16;
-    var raf = 0;
-    var active = false;
-    var inView = true;
-
-    function apply(x, y, floatY) {
-      var t =
-        "translate3d(0," +
-        floatY.toFixed(2) +
-        "px,0) rotateX(" +
-        x.toFixed(2) +
-        "deg) rotateY(" +
-        y.toFixed(2) +
-        "deg)";
-      rig.style.transform = t;
-      rig.style.webkitTransform = t;
-    }
-
-    function setTargets(clientX, clientY) {
-      var rect = scene.getBoundingClientRect();
-      var px = (clientX - rect.left) / Math.max(rect.width, 1);
-      var py = (clientY - rect.top) / Math.max(rect.height, 1);
-      targetY = (px - 0.5) * 2 * maxTilt;
-      targetX = (0.5 - py) * 2 * maxTilt;
-    }
-
-    function stopRaf() {
-      active = false;
-      if (raf) window.cancelAnimationFrame(raf);
-      raf = 0;
-      // hand back to CSS float
-      rig.style.transform = "";
-      rig.style.webkitTransform = "";
-      rig.classList.remove("is-tilting");
-    }
-
-    function frame() {
-      if (!active || !inView || document.hidden) {
-        stopRaf();
-        return;
-      }
-      curX += (targetX - curX) * 0.14;
-      curY += (targetY - curY) * 0.14;
-      apply(curX, curY, 0);
-      if (Math.abs(curX - targetX) < 0.05 && Math.abs(curY - targetY) < 0.05 && targetX === 0 && targetY === 0) {
-        stopRaf();
-        return;
-      }
-      raf = window.requestAnimationFrame(frame);
-    }
-
-    function startTilt() {
-      if (!inView || document.hidden) return;
-      active = true;
-      rig.classList.add("is-tilting");
-      if (!raf) raf = window.requestAnimationFrame(frame);
-    }
-
-    scene.addEventListener(
-      "pointermove",
-      function (e) {
-        setTargets(e.clientX, e.clientY);
-        startTilt();
-      },
-      { passive: true }
-    );
-
-    scene.addEventListener(
-      "pointerleave",
-      function () {
-        targetX = 0;
-        targetY = 0;
-        startTilt();
-      },
-      { passive: true }
-    );
-
-    onVisible(scene, function (visible) {
-      inView = visible;
-      if (!visible) stopRaf();
-    });
-
-    document.addEventListener("visibilitychange", function () {
-      if (document.hidden) stopRaf();
-    });
-  }
-
   /* ---------- Scroll progress (rAF throttled) ---------- */
   function initScrollProgress() {
     var bar = document.querySelector(".scroll-progress span");
@@ -359,7 +262,7 @@
     host.innerHTML = html;
   }
 
-  /* ---------- Character short-film director ---------- */
+  /* ---------- Free-roam character theater (walk / climb / chat / think) ---------- */
   function initCharacterTheater() {
     if (reduceMotion) return;
     var stage = document.querySelector(".tech-stage");
@@ -371,16 +274,37 @@
       var el = nodes[i];
       actors[el.getAttribute("data-actor")] = {
         el: el,
+        x: 50,
+        y: 60,
         sayEl: el.querySelector('[data-bubble="say"]'),
         thinkEl: el.querySelector('[data-bubble="think"]')
       };
     }
     if (!actors.student || !actors.engineer || !actors.bot) return;
 
-    function clearAll() {
-      Object.keys(actors).forEach(function (key) {
-        var a = actors[key];
-        a.el.classList.remove("is-walking");
+    var groundY = lowPower ? [58, 72] : [52, 78];
+    var climbY = lowPower ? [28, 42] : [18, 40];
+    var moveMs = lowPower ? 1600 : 2200;
+
+    function wait(ms) {
+      return new Promise(function (resolve) {
+        window.setTimeout(resolve, ms);
+      });
+    }
+
+    function clamp(v, a, b) {
+      return Math.max(a, Math.min(b, v));
+    }
+
+    function rand(a, b) {
+      return a + Math.random() * (b - a);
+    }
+
+    function clearBubbles(name) {
+      var list = name ? [name] : Object.keys(actors);
+      for (var i = 0; i < list.length; i++) {
+        var a = actors[list[i]];
+        if (!a) continue;
         if (a.sayEl) {
           a.sayEl.hidden = true;
           a.sayEl.classList.remove("is-on");
@@ -391,144 +315,206 @@
           a.thinkEl.classList.remove("is-on");
           a.thinkEl.textContent = "";
         }
+        a.el.classList.remove("is-acting");
+      }
+    }
+
+    function move(name, x, y, opts) {
+      opts = opts || {};
+      var a = actors[name];
+      if (!a) return Promise.resolve();
+      var faceLeft = opts.faceLeft;
+      if (faceLeft === undefined) faceLeft = x < a.x;
+      a.x = clamp(x, 6, 94);
+      a.y = clamp(y, 14, 82);
+      a.el.classList.toggle("face-left", !!faceLeft);
+      a.el.classList.toggle("is-climbing", !!opts.climb);
+      a.el.classList.add("is-walking");
+      a.el.style.left = a.x + "%";
+      a.el.style.top = a.y + "%";
+      return wait(opts.duration || moveMs).then(function () {
+        a.el.classList.remove("is-walking");
+        if (!opts.keepClimb) a.el.classList.remove("is-climbing");
       });
     }
 
-    function move(name, x, y, faceLeft) {
+    function speak(name, type, text, hold) {
       var a = actors[name];
-      if (!a) return;
-      a.el.classList.add("is-walking");
-      a.el.style.left = x + "%";
-      a.el.style.top = y + "%";
-      if (faceLeft === true) a.el.classList.add("face-left");
-      else if (faceLeft === false) a.el.classList.remove("face-left");
-    }
-
-    function speak(name, type, text) {
-      var a = actors[name];
-      if (!a) return;
+      if (!a) return Promise.resolve();
+      clearBubbles(name);
       var bubble = type === "think" ? a.thinkEl : a.sayEl;
-      var other = type === "think" ? a.sayEl : a.thinkEl;
-      if (other) {
-        other.hidden = true;
-        other.classList.remove("is-on");
-      }
-      if (!bubble) return;
+      if (!bubble) return Promise.resolve();
+      a.el.classList.add("is-acting");
       bubble.hidden = false;
       bubble.textContent = text;
-      // force reflow for transition
       void bubble.offsetWidth;
       bubble.classList.add("is-on");
-    }
-
-    function wait(ms) {
-      return new Promise(function (resolve) {
-        window.setTimeout(resolve, ms);
+      return wait(hold || 2000).then(function () {
+        bubble.classList.remove("is-on");
+        bubble.hidden = true;
+        a.el.classList.remove("is-acting");
       });
     }
 
-    var scenes = [
-      async function () {
-        clearAll();
-        move("student", 12, 68, false);
-        move("engineer", 86, 60, true);
-        move("bot", 50, 42, false);
-        await wait(700);
-        speak("student", "think", "Hôm nay lịch học thế nào nhỉ…");
-        await wait(2200);
+    function roam(name) {
+      var x = rand(8, 92);
+      var y = rand(groundY[0], groundY[1]);
+      return move(name, x, y, { duration: moveMs });
+    }
+
+    function climb(name) {
+      var x = rand(30, 70);
+      var y = rand(climbY[0], climbY[1]);
+      return move(name, x, y, { climb: true, keepClimb: true, duration: moveMs + 400 });
+    }
+
+    var lines = {
+      student: {
+        think: [
+          "Lịch học hôm nay ra sao nhỉ…",
+          "Mình nên xem điểm thành phần.",
+          "ST VLUTE tiện thật…",
+          "Nếu trễ tiết thì sao ta?"
+        ],
+        say: [
+          "Cho mình xin thời khóa biểu!",
+          "Cảm ơn AI Helper!",
+          "App mượt quá anh ơi.",
+          "Mình sẵn sàng học kỳ mới!"
+        ]
       },
-      async function () {
-        clearAll();
-        move("bot", 22, 58, true);
-        move("student", 18, 66, false);
-        await wait(1600);
-        speak("bot", "say", "Mình quét API VLUTE giúp bạn nhé!");
-        await wait(1200);
-        speak("student", "say", "Ok! Mở giúp thời khóa biểu.");
-        await wait(2200);
+      engineer: {
+        think: [
+          "API nhà trường ổn không?",
+          "Công nghệ phải phục vụ con người.",
+          "Tối ưu cache tiếp nào…",
+          "CNTT = kết nối & sáng tạo."
+        ],
+        say: [
+          "API VLUTE đang green.",
+          "Cache local đã bật.",
+          "ST VLUTE = Students × VLUTE.",
+          "Leo lên node trên kiểm tra wire!"
+        ]
       },
+      bot: {
+        think: [
+          "Mình ý thức nhiệm vụ hỗ trợ sinh viên.",
+          "Đang quét dữ liệu GPA…",
+          "Con người + AI = team.",
+          "Ping… pong… sync ok."
+        ],
+        say: [
+          "Mình đồng bộ giúp bạn!",
+          "Timeline đã sẵn sàng.",
+          "Team VLUTE online!",
+          "Leo chip trung tâm nào!"
+        ]
+      }
+    };
+
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    async function meetAndTalk(a, b) {
+      var mx = rand(35, 65);
+      var my = rand(groundY[0], Math.min(groundY[1], 70));
+      await Promise.all([
+        move(a, mx - 7, my, { faceLeft: false }),
+        move(b, mx + 7, my, { faceLeft: true })
+      ]);
+      await speak(a, "say", pick(lines[a].say), 1700);
+      await speak(b, "say", pick(lines[b].say), 1700);
+      if (Math.random() > 0.45) {
+        await speak(a, "think", pick(lines[a].think), 1600);
+      }
+    }
+
+    async function climbTogether() {
+      await Promise.all([climb("bot"), climb("engineer"), climb("student")]);
+      await speak("bot", "say", "Leo lên chip VLUTE·IT!", 1600);
+      await speak("engineer", "think", "Từ trên cao nhìn toàn hệ thống…", 1700);
+      await speak("student", "say", "Wow, nhìn toàn board!", 1500);
+      await Promise.all([
+        move("bot", rand(20, 80), rand(groundY[0], groundY[1]), {}),
+        move("engineer", rand(20, 80), rand(groundY[0], groundY[1]), {}),
+        move("student", rand(20, 80), rand(groundY[0], groundY[1]), {})
+      ]);
+    }
+
+    async function soloThought(name) {
+      if (Math.random() > 0.55) await climb(name);
+      else await roam(name);
+      await speak(name, "think", pick(lines[name].think), 1800);
+      if (actors[name].el.classList.contains("is-climbing")) {
+        await move(name, rand(12, 88), rand(groundY[0], groundY[1]), {});
+      }
+    }
+
+    async function freeWander() {
+      await Promise.all([roam("student"), roam("engineer"), roam("bot")]);
+      if (Math.random() > 0.5) await climb("bot");
+      var who = pick(["student", "engineer", "bot"]);
+      await speak(who, "think", pick(lines[who].think), 1500);
+    }
+
+    var beats = [
+      function () { return soloThought("student"); },
+      function () { return meetAndTalk("student", "bot"); },
+      function () { return meetAndTalk("student", "engineer"); },
+      function () { return climbTogether(); },
+      function () { return meetAndTalk("engineer", "bot"); },
+      function () { return soloThought("engineer"); },
+      function () { return soloThought("bot"); },
+      function () { return freeWander(); },
       async function () {
-        clearAll();
-        move("engineer", 34, 58, true);
-        move("student", 22, 66, false);
-        move("bot", 42, 50, true);
-        await wait(1800);
-        speak("engineer", "say", "API ổn định. Cache local đã bật.");
-        await wait(1600);
-        speak("student", "think", "Wow… người và công nghệ thật sự kết nối.");
-        await wait(2200);
-      },
-      async function () {
-        clearAll();
-        move("bot", 48, 52, false);
-        move("student", 40, 64, false);
-        move("engineer", 58, 62, true);
-        await wait(1500);
-        speak("bot", "think", "Mình ý thức được nhiệm vụ: hỗ trợ sinh viên.");
-        await wait(1800);
-        speak("engineer", "say", "ST VLUTE = Students × VLUTE.");
-        await wait(1600);
-        speak("student", "say", "Cảm ơn anh & AI Helper!");
-        await wait(2200);
-      },
-      async function () {
-        clearAll();
-        move("student", 70, 66, false);
-        move("bot", 78, 52, false);
-        move("engineer", 16, 58, false);
-        await wait(1800);
-        speak("student", "think", "Điểm thành phần… mình xem trên app vậy.");
-        await wait(1600);
-        speak("bot", "say", "Đã đồng bộ GPA + Cache.");
-        await wait(2000);
-      },
-      async function () {
-        clearAll();
-        move("engineer", 48, 58, true);
-        move("bot", 56, 48, true);
-        move("student", 38, 66, false);
-        await wait(1400);
-        speak("engineer", "think", "Công nghệ phục vụ con người — đó là CNTT.");
-        await wait(1800);
-        speak("bot", "say", "Team VLUTE online!");
-        await wait(1600);
-        speak("student", "say", "Mình sẵn sàng học kỳ mới!");
-        await wait(2400);
+        await Promise.all([roam("student"), roam("engineer"), roam("bot")]);
+        await speak("bot", "say", pick(lines.bot.say), 1500);
+        await speak("student", "say", pick(lines.student.say), 1500);
+        await speak("engineer", "say", pick(lines.engineer.say), 1500);
       }
     ];
 
-    var running = true;
-    var idx = 0;
+    Object.keys(actors).forEach(function (key) {
+      actors[key].el.style.transitionDuration = moveMs + "ms";
+    });
 
+    var running = true;
     async function loop() {
+      var order = beats.slice();
       while (running) {
         if (document.hidden) {
-          await wait(1000);
+          clearBubbles();
+          await wait(900);
           continue;
         }
-        try {
-          await scenes[idx % scenes.length]();
-        } catch (e) {}
-        idx += 1;
-        clearAll();
-        Object.keys(actors).forEach(function (key) {
-          actors[key].el.classList.remove("is-walking");
-        });
-        await wait(600);
+        // shuffle lightly
+        for (var i = order.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = order[i];
+          order[i] = order[j];
+          order[j] = tmp;
+        }
+        for (var k = 0; k < order.length; k++) {
+          if (document.hidden) break;
+          try {
+            await order[k]();
+          } catch (e) {}
+          clearBubbles();
+          await wait(500);
+        }
       }
     }
 
     document.addEventListener("visibilitychange", function () {
-      if (document.hidden) clearAll();
+      if (document.hidden) clearBubbles();
     });
 
-    // Slightly faster transitions on low-power
-    if (lowPower) {
-      Object.keys(actors).forEach(function (key) {
-        actors[key].el.style.transitionDuration = "1.5s";
-      });
-    }
-
+    // start scattered
+    move("student", 14, 70, { duration: 10 });
+    move("engineer", 82, 62, { duration: 10, faceLeft: true });
+    move("bot", 50, 36, { duration: 10, climb: true, keepClimb: true });
     loop();
   }
 
@@ -537,7 +523,6 @@
     initReveal();
     initDataRain();
     initParticles();
-    initLogo3D();
     initScrollProgress();
     initStMorph();
     initCharacterTheater();
