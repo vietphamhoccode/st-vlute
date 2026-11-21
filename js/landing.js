@@ -359,6 +359,179 @@
     host.innerHTML = html;
   }
 
+  /* ---------- Character short-film director ---------- */
+  function initCharacterTheater() {
+    if (reduceMotion) return;
+    var stage = document.querySelector(".tech-stage");
+    if (!stage) return;
+
+    var actors = {};
+    var nodes = stage.querySelectorAll("[data-actor]");
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      actors[el.getAttribute("data-actor")] = {
+        el: el,
+        sayEl: el.querySelector('[data-bubble="say"]'),
+        thinkEl: el.querySelector('[data-bubble="think"]')
+      };
+    }
+    if (!actors.student || !actors.engineer || !actors.bot) return;
+
+    function clearAll() {
+      Object.keys(actors).forEach(function (key) {
+        var a = actors[key];
+        a.el.classList.remove("is-walking");
+        if (a.sayEl) {
+          a.sayEl.hidden = true;
+          a.sayEl.classList.remove("is-on");
+          a.sayEl.textContent = "";
+        }
+        if (a.thinkEl) {
+          a.thinkEl.hidden = true;
+          a.thinkEl.classList.remove("is-on");
+          a.thinkEl.textContent = "";
+        }
+      });
+    }
+
+    function move(name, x, y, faceLeft) {
+      var a = actors[name];
+      if (!a) return;
+      a.el.classList.add("is-walking");
+      a.el.style.left = x + "%";
+      a.el.style.top = y + "%";
+      if (faceLeft === true) a.el.classList.add("face-left");
+      else if (faceLeft === false) a.el.classList.remove("face-left");
+    }
+
+    function speak(name, type, text) {
+      var a = actors[name];
+      if (!a) return;
+      var bubble = type === "think" ? a.thinkEl : a.sayEl;
+      var other = type === "think" ? a.sayEl : a.thinkEl;
+      if (other) {
+        other.hidden = true;
+        other.classList.remove("is-on");
+      }
+      if (!bubble) return;
+      bubble.hidden = false;
+      bubble.textContent = text;
+      // force reflow for transition
+      void bubble.offsetWidth;
+      bubble.classList.add("is-on");
+    }
+
+    function wait(ms) {
+      return new Promise(function (resolve) {
+        window.setTimeout(resolve, ms);
+      });
+    }
+
+    var scenes = [
+      async function () {
+        clearAll();
+        move("student", 12, 68, false);
+        move("engineer", 86, 60, true);
+        move("bot", 50, 42, false);
+        await wait(700);
+        speak("student", "think", "Hôm nay lịch học thế nào nhỉ…");
+        await wait(2200);
+      },
+      async function () {
+        clearAll();
+        move("bot", 22, 58, true);
+        move("student", 18, 66, false);
+        await wait(1600);
+        speak("bot", "say", "Mình quét API VLUTE giúp bạn nhé!");
+        await wait(1200);
+        speak("student", "say", "Ok! Mở giúp thời khóa biểu.");
+        await wait(2200);
+      },
+      async function () {
+        clearAll();
+        move("engineer", 34, 58, true);
+        move("student", 22, 66, false);
+        move("bot", 42, 50, true);
+        await wait(1800);
+        speak("engineer", "say", "API ổn định. Cache local đã bật.");
+        await wait(1600);
+        speak("student", "think", "Wow… người và công nghệ thật sự kết nối.");
+        await wait(2200);
+      },
+      async function () {
+        clearAll();
+        move("bot", 48, 52, false);
+        move("student", 40, 64, false);
+        move("engineer", 58, 62, true);
+        await wait(1500);
+        speak("bot", "think", "Mình ý thức được nhiệm vụ: hỗ trợ sinh viên.");
+        await wait(1800);
+        speak("engineer", "say", "ST VLUTE = Students × VLUTE.");
+        await wait(1600);
+        speak("student", "say", "Cảm ơn anh & AI Helper!");
+        await wait(2200);
+      },
+      async function () {
+        clearAll();
+        move("student", 70, 66, false);
+        move("bot", 78, 52, false);
+        move("engineer", 16, 58, false);
+        await wait(1800);
+        speak("student", "think", "Điểm thành phần… mình xem trên app vậy.");
+        await wait(1600);
+        speak("bot", "say", "Đã đồng bộ GPA + Cache.");
+        await wait(2000);
+      },
+      async function () {
+        clearAll();
+        move("engineer", 48, 58, true);
+        move("bot", 56, 48, true);
+        move("student", 38, 66, false);
+        await wait(1400);
+        speak("engineer", "think", "Công nghệ phục vụ con người — đó là CNTT.");
+        await wait(1800);
+        speak("bot", "say", "Team VLUTE online!");
+        await wait(1600);
+        speak("student", "say", "Mình sẵn sàng học kỳ mới!");
+        await wait(2400);
+      }
+    ];
+
+    var running = true;
+    var idx = 0;
+
+    async function loop() {
+      while (running) {
+        if (document.hidden) {
+          await wait(1000);
+          continue;
+        }
+        try {
+          await scenes[idx % scenes.length]();
+        } catch (e) {}
+        idx += 1;
+        clearAll();
+        Object.keys(actors).forEach(function (key) {
+          actors[key].el.classList.remove("is-walking");
+        });
+        await wait(600);
+      }
+    }
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) clearAll();
+    });
+
+    // Slightly faster transitions on low-power
+    if (lowPower) {
+      Object.keys(actors).forEach(function (key) {
+        actors[key].el.style.transitionDuration = "1.5s";
+      });
+    }
+
+    loop();
+  }
+
   function boot() {
     initAmbientGuard();
     initReveal();
@@ -367,6 +540,7 @@
     initLogo3D();
     initScrollProgress();
     initStMorph();
+    initCharacterTheater();
   }
 
   if (document.readyState === "loading") {
