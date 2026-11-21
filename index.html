@@ -20,19 +20,12 @@
 <body>
   <a class="skip-link" href="#main">Bỏ qua điều hướng</a>
 
-  <div class="ambient" aria-hidden="true">
+      <div class="ambient" aria-hidden="true">
     <div class="bg-aurora"></div>
-    <div class="bg-waves">
-      <span></span><span></span><span></span>
-    </div>
     <canvas id="particle-canvas"></canvas>
     <div class="glow glow-a"></div>
     <div class="glow glow-b"></div>
-    <div class="glow glow-c"></div>
     <div class="mesh"></div>
-    <div class="bg-orbs">
-      <i></i><i></i><i></i><i></i><i></i><i></i>
-    </div>
   </div>
 
   <header class="site-header">
@@ -251,6 +244,14 @@
         Chỉ tham khảo kỹ thuật. Tự bảo đảm quyền dùng IPA. Cert bên thứ ba có thể bị thu hồi bất cứ lúc nào.
       </p>
 
+      <p class="ios-warn reveal">
+        <i class="ph-fill ph-shield-warning" aria-hidden="true"></i>
+        <span>
+          <strong>Cảnh báo:</strong> Dùng <strong>Apple ID / iCloud phụ</strong> (tài khoản phụ).
+          <em>Không dùng tài khoản chính</em> — tránh khóa máy, mất dữ liệu iCloud, hoặc rủi ro bảo mật khi sideload / nhập Apple ID vào AltStore · SideStore · công cụ ký.
+        </span>
+      </p>
+
       <div class="pick-table reveal" role="region" aria-label="Chọn phương án nhanh">
         <div class="pick-row pick-head">
           <span>Phương án</span>
@@ -339,7 +340,7 @@
           </div>
           <ol class="steps">
             <li><strong>Bước 1:</strong> PC tải AltServer từ <a href="https://altstore.io" target="_blank" rel="noopener noreferrer">altstore.io</a> (Win: cài iTunes bản Apple, không dùng Store).</li>
-            <li><strong>Bước 2:</strong> Cắm USB → AltServer → <strong>Install AltStore</strong> → nhập Apple ID.</li>
+            <li><strong>Bước 2:</strong> Cắm USB → AltServer → <strong>Install AltStore</strong> → nhập <strong>Apple ID phụ</strong> (không dùng ID chính).</li>
             <li><strong>Bước 3:</strong> iPhone: Cài đặt → Cài đặt chung → VPN &amp; Quản lý thiết bị → Tin cậy.</li>
             <li><strong>Bước 4:</strong> AltStore → Settings → Refresh Apps → chọn <strong>Always</strong>.</li>
             <li><strong>Bước 5:</strong> PC AltServer → bật <strong>Enable WiFi Sync</strong>.</li>
@@ -361,7 +362,7 @@
             <li><strong>Bước 1:</strong> PC dùng iloader cài SideStore lên iPhone (theo docs).</li>
             <li><strong>Bước 2:</strong> iPhone: VPN &amp; Quản lý thiết bị → Tin cậy.</li>
             <li><strong>Bước 3:</strong> Mở LocalDevVPN → bấm <strong>Connect</strong>.</li>
-            <li><strong>Bước 4:</strong> SideStore → đăng nhập Apple ID → My Apps → bấm <strong>7 DAYS</strong> để refresh.</li>
+            <li><strong>Bước 4:</strong> SideStore → đăng nhập <strong>Apple ID phụ</strong> → My Apps → bấm <strong>7 DAYS</strong> để refresh.</li>
             <li><strong>Bước 5:</strong> Giữ LocalDevVPN Connected → SideStore tự renew nền.</li>
           </ol>
         </article>
