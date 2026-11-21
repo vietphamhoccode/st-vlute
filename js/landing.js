@@ -331,9 +331,38 @@
     document.addEventListener("visibilitychange", sync);
   }
 
+  function initDataRain() {
+    var host = document.getElementById("data-rain");
+    if (!host || reduceMotion) return;
+    if (lowPower) {
+      host.style.display = "none";
+      return;
+    }
+    var bits = ["01", "10", "API", "GPA", "{}", "<>", "IT", "CNTT", "VLUTE", "0x1F", "sync", "cache"];
+    var count = Math.min(14, Math.max(8, Math.floor(window.innerWidth / 120)));
+    var html = "";
+    for (var i = 0; i < count; i++) {
+      var left = (i * (100 / count) + Math.random() * 4).toFixed(2);
+      var dur = (9 + Math.random() * 10).toFixed(1);
+      var delay = (-Math.random() * 10).toFixed(1);
+      html +=
+        '<span style="left:' +
+        left +
+        "%;animation-duration:" +
+        dur +
+        "s;animation-delay:" +
+        delay +
+        's">' +
+        bits[i % bits.length] +
+        "</span>";
+    }
+    host.innerHTML = html;
+  }
+
   function boot() {
     initAmbientGuard();
     initReveal();
+    initDataRain();
     initParticles();
     initLogo3D();
     initScrollProgress();
