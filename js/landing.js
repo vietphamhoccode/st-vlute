@@ -109,11 +109,11 @@
           var dy = particles[a].y - particles[b].y;
           var dist = Math.sqrt(dx * dx + dy * dy);
           if (dist > 120) continue;
-          var alpha = (1 - dist / 120) * 0.16;
+          var alpha = (1 - dist / 120) * 0.1;
           ctx.beginPath();
           ctx.moveTo(particles[a].x, particles[a].y);
           ctx.lineTo(particles[b].x, particles[b].y);
-          ctx.strokeStyle = "rgba(24, 143, 79," + alpha + ")";
+          ctx.strokeStyle = "rgba(7, 53, 40," + alpha + ")";
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -123,7 +123,7 @@
         var q = particles[j];
         ctx.beginPath();
         ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(24, 143, 79," + q.a + ")";
+        ctx.fillStyle = "rgba(7, 53, 40," + Math.min(0.35, q.a * 0.7) + ")";
         ctx.fill();
       }
       raf = window.requestAnimationFrame(tick);

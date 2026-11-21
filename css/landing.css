@@ -87,7 +87,7 @@ body {
   min-height: 100dvh;
   font-family: var(--font-body);
   color: var(--ink);
-  background: #e8f6ef;
+  background: #cfead9;
   overflow-x: hidden;
   line-height: 1.55;
 }
@@ -107,28 +107,29 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .skip-link:focus { left: 1rem; top: 1rem; }
 
-/* Ambient — moving background */
+/* Ambient — moving background (no milky white wash) */
 .ambient {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  background: linear-gradient(180deg, #d7f0e3 0%, #f4fbf7 48%, #eaf7f0 100%);
+  background: linear-gradient(180deg, #b7e2cb 0%, #cfead9 45%, #c3e4d2 100%);
 }
 
 .bg-aurora {
   position: absolute;
-  inset: -20%;
+  inset: -15%;
   background:
-    radial-gradient(closest-side at 20% 30%, rgba(43, 182, 115, 0.45), transparent 70%),
-    radial-gradient(closest-side at 80% 20%, rgba(18, 58, 107, 0.28), transparent 68%),
-    radial-gradient(closest-side at 60% 80%, rgba(226, 59, 53, 0.12), transparent 65%),
-    radial-gradient(closest-side at 35% 70%, rgba(24, 143, 79, 0.22), transparent 70%);
+    radial-gradient(closest-side at 18% 28%, rgba(24, 143, 79, 0.28), transparent 72%),
+    radial-gradient(closest-side at 82% 18%, rgba(18, 58, 107, 0.16), transparent 70%),
+    radial-gradient(closest-side at 62% 82%, rgba(226, 59, 53, 0.06), transparent 68%),
+    radial-gradient(closest-side at 40% 65%, rgba(24, 143, 79, 0.12), transparent 72%);
   background-size: 140% 140%;
   -webkit-animation: auroraShift 18s ease-in-out infinite alternate;
   animation: auroraShift 18s ease-in-out infinite alternate;
   will-change: background-position, transform;
+  opacity: 0.85;
 }
 
 @-webkit-keyframes auroraShift {
@@ -170,7 +171,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   position: absolute;
   inset: 0;
   overflow: hidden;
-  opacity: 0.35;
+  opacity: 0.18;
 }
 
 .bg-waves span {
@@ -179,9 +180,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
   width: 140%;
   height: 42%;
   border-radius: 45% 55% 50% 50%;
-  background: linear-gradient(90deg, rgba(24, 143, 79, 0.12), rgba(18, 58, 107, 0.08), rgba(43, 182, 115, 0.14));
-  -webkit-filter: blur(8px);
-  filter: blur(8px);
+  background: linear-gradient(90deg, rgba(24, 143, 79, 0.16), rgba(18, 58, 107, 0.08), rgba(24, 143, 79, 0.12));
+  -webkit-filter: blur(6px);
+  filter: blur(6px);
   -webkit-animation: waveDrift 22s linear infinite;
   animation: waveDrift 22s linear infinite;
 }
@@ -221,34 +222,34 @@ button, a { -webkit-tap-highlight-color: transparent; }
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.55;
+  opacity: 0.28;
 }
 
 .glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
-  -webkit-filter: blur(70px);
-  opacity: 0.55;
+  filter: blur(64px);
+  -webkit-filter: blur(64px);
+  opacity: 0.32;
   will-change: transform;
   -webkit-animation: drift 14s ease-in-out infinite alternate;
   animation: drift 14s ease-in-out infinite alternate;
 }
 
 .glow-a {
-  width: min(52vw, 460px);
-  height: min(52vw, 460px);
-  left: -10%;
-  top: 8%;
-  background: rgba(43, 182, 115, 0.48);
+  width: min(46vw, 380px);
+  height: min(46vw, 380px);
+  left: -12%;
+  top: 6%;
+  background: rgba(24, 143, 79, 0.42);
 }
 
 .glow-b {
-  width: min(40vw, 360px);
-  height: min(40vw, 360px);
-  right: -8%;
-  top: 18%;
-  background: rgba(18, 58, 107, 0.26);
+  width: min(36vw, 300px);
+  height: min(36vw, 300px);
+  right: -10%;
+  top: 16%;
+  background: rgba(18, 58, 107, 0.2);
   -webkit-animation-delay: -5s;
   animation-delay: -5s;
   -webkit-animation-duration: 18s;
@@ -256,11 +257,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 .glow-c {
-  width: min(36vw, 300px);
-  height: min(36vw, 300px);
-  left: 40%;
-  bottom: 8%;
-  background: rgba(226, 59, 53, 0.14);
+  width: min(30vw, 240px);
+  height: min(30vw, 240px);
+  left: 48%;
+  bottom: 10%;
+  background: rgba(226, 59, 53, 0.08);
   -webkit-animation-delay: -9s;
   animation-delay: -9s;
   -webkit-animation-duration: 12s;
@@ -271,11 +272,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(rgba(7, 53, 40, 0.09) 1.2px, transparent 1.2px);
-  background-size: 30px 30px;
+    radial-gradient(rgba(7, 53, 40, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
   -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 18%, #000 12%, transparent 75%);
   mask-image: radial-gradient(ellipse 70% 55% at 50% 18%, #000 12%, transparent 75%);
-  opacity: 0.5;
+  opacity: 0.35;
   -webkit-animation: meshPan 30s linear infinite;
   animation: meshPan 30s linear infinite;
 }
@@ -298,26 +299,26 @@ button, a { -webkit-tap-highlight-color: transparent; }
   position: absolute;
   display: block;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(43, 182, 115, 0.25) 45%, transparent 70%);
+  background: radial-gradient(circle at 30% 30%, rgba(43, 182, 115, 0.55), rgba(24, 143, 79, 0.18) 48%, transparent 72%);
   -webkit-animation: orbFloat 12s ease-in-out infinite;
   animation: orbFloat 12s ease-in-out infinite;
-  opacity: 0.55;
+  opacity: 0.35;
 }
 
-.bg-orbs i:nth-child(1) { width: 18px; height: 18px; left: 12%; top: 22%; -webkit-animation-delay: 0s; animation-delay: 0s; }
-.bg-orbs i:nth-child(2) { width: 12px; height: 12px; left: 28%; top: 68%; -webkit-animation-delay: -2s; animation-delay: -2s; }
-.bg-orbs i:nth-child(3) { width: 22px; height: 22px; left: 72%; top: 18%; -webkit-animation-delay: -4s; animation-delay: -4s; }
-.bg-orbs i:nth-child(4) { width: 14px; height: 14px; left: 84%; top: 58%; -webkit-animation-delay: -1s; animation-delay: -1s; }
-.bg-orbs i:nth-child(5) { width: 10px; height: 10px; left: 48%; top: 42%; -webkit-animation-delay: -6s; animation-delay: -6s; }
-.bg-orbs i:nth-child(6) { width: 16px; height: 16px; left: 58%; top: 78%; -webkit-animation-delay: -3s; animation-delay: -3s; }
+.bg-orbs i:nth-child(1) { width: 14px; height: 14px; left: 12%; top: 22%; -webkit-animation-delay: 0s; animation-delay: 0s; }
+.bg-orbs i:nth-child(2) { width: 10px; height: 10px; left: 28%; top: 68%; -webkit-animation-delay: -2s; animation-delay: -2s; }
+.bg-orbs i:nth-child(3) { width: 16px; height: 16px; left: 72%; top: 18%; -webkit-animation-delay: -4s; animation-delay: -4s; }
+.bg-orbs i:nth-child(4) { width: 11px; height: 11px; left: 84%; top: 58%; -webkit-animation-delay: -1s; animation-delay: -1s; }
+.bg-orbs i:nth-child(5) { width: 8px; height: 8px; left: 48%; top: 42%; -webkit-animation-delay: -6s; animation-delay: -6s; }
+.bg-orbs i:nth-child(6) { width: 12px; height: 12px; left: 58%; top: 78%; -webkit-animation-delay: -3s; animation-delay: -3s; }
 
 @-webkit-keyframes orbFloat {
-  0%, 100% { -webkit-transform: translate3d(0, 0, 0) scale(1); transform: translate3d(0, 0, 0) scale(1); opacity: 0.35; }
-  50% { -webkit-transform: translate3d(12px, -28px, 0) scale(1.25); transform: translate3d(12px, -28px, 0) scale(1.25); opacity: 0.8; }
+  0%, 100% { -webkit-transform: translate3d(0, 0, 0) scale(1); transform: translate3d(0, 0, 0) scale(1); opacity: 0.22; }
+  50% { -webkit-transform: translate3d(12px, -28px, 0) scale(1.2); transform: translate3d(12px, -28px, 0) scale(1.2); opacity: 0.45; }
 }
 @keyframes orbFloat {
-  0%, 100% { -webkit-transform: translate3d(0, 0, 0) scale(1); transform: translate3d(0, 0, 0) scale(1); opacity: 0.35; }
-  50% { -webkit-transform: translate3d(12px, -28px, 0) scale(1.25); transform: translate3d(12px, -28px, 0) scale(1.25); opacity: 0.8; }
+  0%, 100% { -webkit-transform: translate3d(0, 0, 0) scale(1); transform: translate3d(0, 0, 0) scale(1); opacity: 0.22; }
+  50% { -webkit-transform: translate3d(12px, -28px, 0) scale(1.2); transform: translate3d(12px, -28px, 0) scale(1.2); opacity: 0.45; }
 }
 
 @-webkit-keyframes drift {
@@ -352,8 +353,8 @@ main,
   z-index: 30;
   backdrop-filter: blur(14px) saturate(1.2);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  background: rgba(244, 251, 247, 0.72);
-  border-bottom: 1px solid rgba(7, 53, 40, 0.08);
+  background: rgba(207, 234, 217, 0.88);
+  border-bottom: 1px solid rgba(7, 53, 40, 0.1);
 }
 
 .brand-mark {
@@ -1315,6 +1316,60 @@ main,
   .logo-rig { inset: 14%; }
   .logo-core,
   .logo-plate { border-radius: 22px; }
+
+  /* Mobile: remove milky white haze */
+  .bg-waves,
+  .bg-orbs,
+  .glow-c { display: none; }
+
+  .glow { opacity: 0.18; }
+  .bg-aurora { opacity: 0.55; }
+  #particle-canvas { opacity: 0.14; }
+  .mesh { opacity: 0.18; }
+
+  .ambient {
+    background: linear-gradient(180deg, #b2dec6 0%, #c6e6d4 50%, #bfe2cf 100%);
+  }
+
+  .site-header {
+    background: rgba(198, 230, 212, 0.94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .btn-ghost,
+  .platform-row li,
+  .meaning-full,
+  .feature-item {
+    background: #ffffff;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #0a4f30, #157a42 55%, #1f9a55);
+  }
+
+  .brand-title,
+  .st-core,
+  .st-tail {
+    color: #032017;
+  }
+
+  .brand-line.accent {
+    -webkit-text-fill-color: #085c36;
+    color: #085c36;
+    background: none;
+  }
+
+  .eyebrow,
+  .hero-lead,
+  .stage-hint {
+    color: #355649;
+  }
+
+  .meaning-full {
+    color: #3d5a4c;
+    border-color: rgba(7, 53, 40, 0.14);
+  }
 
   .stage-hint {
     font-size: 0.78rem;
