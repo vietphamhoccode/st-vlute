@@ -67,37 +67,63 @@
       canvas.style.height = h + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      var count = Math.max(18, Math.min(48, Math.floor((w * h) / 38000)));
+      var count = Math.max(28, Math.min(70, Math.floor((w * h) / 26000)));
       particles = [];
       for (var i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: 1 + Math.random() * 2.2,
-          vx: (Math.random() - 0.5) * 0.25,
-          vy: -0.15 - Math.random() * 0.35,
-          a: 0.15 + Math.random() * 0.35
+          r: 1 + Math.random() * 2.6,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: -0.12 - Math.random() * 0.42,
+          a: 0.18 + Math.random() * 0.4,
+          phase: Math.random() * Math.PI * 2
         });
       }
     }
 
-    function tick() {
+    function tick(ts) {
       if (!running) return;
+      var t = (ts || 0) * 0.001;
       ctx.clearRect(0, 0, w, h);
+
       for (var i = 0; i < particles.length; i++) {
         var p = particles[i];
-        p.x += p.vx;
+        p.x += p.vx + Math.sin(t + p.phase) * 0.18;
         p.y += p.vy;
-        if (p.y < -10) {
-          p.y = h + 10;
+        if (p.y < -12) {
+          p.y = h + 12;
           p.x = Math.random() * w;
         }
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
+        if (p.y > h + 12) {
+          p.y = -12;
+          p.x = Math.random() * w;
+        }
+        if (p.x < -12) p.x = w + 12;
+        if (p.x > w + 12) p.x = -12;
+      }
 
+      for (var a = 0; a < particles.length; a++) {
+        for (var b = a + 1; b < particles.length; b++) {
+          var dx = particles[a].x - particles[b].x;
+          var dy = particles[a].y - particles[b].y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > 120) continue;
+          var alpha = (1 - dist / 120) * 0.16;
+          ctx.beginPath();
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.strokeStyle = "rgba(24, 143, 79," + alpha + ")";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+
+      for (var j = 0; j < particles.length; j++) {
+        var q = particles[j];
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(31, 138, 76," + p.a + ")";
+        ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(24, 143, 79," + q.a + ")";
         ctx.fill();
       }
       raf = window.requestAnimationFrame(tick);

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0b3d2e">
+  <meta name="theme-color" content="#0a2f24">
   <meta name="description" content="ST VLUTE — Thời khóa biểu, điểm số, hồ sơ học tập trên Android & iOS.">
   <meta name="color-scheme" content="light">
   <meta property="og:title" content="ST VLUTE">
@@ -13,140 +13,211 @@
   <link rel="icon" type="image/png" href="assets/logo-vlute.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.2"></script>
   <link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Bỏ qua điều hướng</a>
 
   <div class="ambient" aria-hidden="true">
+    <div class="bg-aurora"></div>
+    <div class="bg-waves">
+      <span></span><span></span><span></span>
+    </div>
     <canvas id="particle-canvas"></canvas>
     <div class="glow glow-a"></div>
     <div class="glow glow-b"></div>
-    <div class="grid-fade"></div>
+    <div class="glow glow-c"></div>
+    <div class="mesh"></div>
+    <div class="bg-orbs">
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
   </div>
 
   <header class="site-header">
-    <div class="brand-mark">
-      <img src="assets/logo-vlute.png" alt="" width="36" height="36">
+    <a class="brand-mark" href="#hero">
+      <img src="assets/logo-vlute.png" alt="" width="34" height="34">
       <span>ST VLUTE</span>
-    </div>
+    </a>
     <nav class="site-nav" aria-label="Chính">
       <a href="#features">Tính năng</a>
       <a href="#download">Tải app</a>
       <a href="#ios-guide">Hướng dẫn iOS</a>
     </nav>
+    <a class="header-cta" href="https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing" target="_blank" rel="noopener noreferrer">
+      <i class="ph ph-download-simple" aria-hidden="true"></i>
+      <span>Tải ngay</span>
+    </a>
   </header>
 
   <main id="main">
     <section class="hero" id="hero">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">Trường ĐH Sư phạm Kỹ thuật Vĩnh Long</p>
-        <h1 class="brand-title">
-          <span class="brand-word">ST</span>
-          <span class="brand-word accent">VLUTE</span>
-        </h1>
-        <p class="hero-lead">
-          Thời khóa biểu · Điểm số · Hồ sơ học tập — gọn trong một ứng dụng trên điện thoại.
-        </p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing" target="_blank" rel="noopener noreferrer">
-            Tải Android &amp; iOS
-          </a>
-          <a class="btn btn-ghost" href="#ios-guide">
-            Xem hướng dẫn iOS
-          </a>
-        </div>
-        <ul class="platform-pills" aria-label="Nền tảng hỗ trợ">
-          <li>Android</li>
-          <li>iOS</li>
-          <li>Chrome · Safari · Edge · Firefox · Cốc Cốc</li>
-        </ul>
-      </div>
-
-      <div class="hero-stage reveal" data-delay="120">
-        <div class="logo-scene" id="logo-scene" aria-hidden="true">
+      <div class="hero-visual reveal">
+        <div class="logo-scene" id="logo-scene" aria-label="Logo VLUTE 3D tương tác">
           <div class="logo-orbit logo-orbit-a"></div>
           <div class="logo-orbit logo-orbit-b"></div>
           <div class="logo-orbit logo-orbit-c"></div>
+          <div class="logo-sparks" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
 
           <div class="logo-rig" id="logo-rig">
             <div class="logo-shadow"></div>
             <div class="logo-plate logo-plate-back"></div>
             <div class="logo-plate logo-plate-mid"></div>
             <div class="logo-core">
-              <img class="logo-img" src="assets/logo-vlute.png" alt="Logo VLUTE" width="200" height="200" decoding="async">
+              <img class="logo-img" src="assets/logo-vlute.png" alt="Logo VLUTE" width="220" height="220" decoding="async">
               <div class="logo-shine"></div>
               <div class="logo-rim"></div>
             </div>
             <div class="logo-flare"></div>
           </div>
         </div>
-        <p class="stage-hint">Di chuyển chuột / chạm để xoay logo 3D</p>
+        <p class="stage-hint">
+          <i class="ph ph-cube-focus" aria-hidden="true"></i>
+          <span>Kéo / chạm để xoay logo 3D</span>
+        </p>
+      </div>
+
+      <div class="hero-copy reveal" data-delay="80">
+        <p class="eyebrow">
+          <i class="ph ph-graduation-cap" aria-hidden="true"></i>
+          Trường Đại Học Công Nghệ Kỹ Thuật Vĩnh Long
+        </p>
+        <h1 class="brand-title">
+          <span class="brand-line">ST</span>
+          <span class="brand-line accent">VLUTE</span>
+        </h1>
+        <p class="hero-lead">
+          Thời khóa biểu, điểm số và hồ sơ học tập — gọn trong một ứng dụng trên điện thoại.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing" target="_blank" rel="noopener noreferrer">
+            <i class="ph-fill ph-download-simple" aria-hidden="true"></i>
+            <span>Tải Android &amp; iOS</span>
+          </a>
+          <a class="btn btn-ghost" href="#ios-guide">
+            <i class="ph ph-play-circle" aria-hidden="true"></i>
+            <span>Hướng dẫn iOS</span>
+          </a>
+        </div>
+
+        <ul class="platform-row" aria-label="Nền tảng hỗ trợ">
+          <li>
+            <i class="ph-fill ph-android-logo" aria-hidden="true"></i>
+            <span>Android</span>
+          </li>
+          <li>
+            <i class="ph-fill ph-apple-logo" aria-hidden="true"></i>
+            <span>iOS</span>
+          </li>
+          <li>
+            <i class="ph ph-browsers" aria-hidden="true"></i>
+            <span>Mọi trình duyệt</span>
+          </li>
+        </ul>
       </div>
     </section>
 
     <section class="features" id="features">
       <div class="section-head reveal">
+        <p class="section-kicker">
+          <i class="ph ph-sparkle" aria-hidden="true"></i>
+          Tính năng
+        </p>
         <h2>Tất cả trong một app</h2>
-        <p>Tra cứu học tập nhanh — đăng nhập bằng tài khoản cổng đào tạo VLUTE.</p>
+        <p>Đăng nhập bằng tài khoản cổng đào tạo VLUTE — không cần tạo tài khoản riêng.</p>
       </div>
-      <ul class="feature-list">
+
+      <ul class="feature-rail">
         <li class="feature-item reveal" data-delay="40">
-          <span class="feature-icon" aria-hidden="true">📅</span>
-          <div>
-            <h3>Thời khóa biểu</h3>
-            <p>Xem theo ngày hoặc cả học kỳ.</p>
-          </div>
+          <span class="feature-icon" aria-hidden="true">
+            <i class="ph ph-calendar-blank"></i>
+          </span>
+          <h3>Thời khóa biểu</h3>
+          <p>Xem theo ngày hoặc cả học kỳ.</p>
         </li>
-        <li class="feature-item reveal" data-delay="80">
-          <span class="feature-icon" aria-hidden="true">📊</span>
-          <div>
-            <h3>Điểm số</h3>
-            <p>Điểm tổng và điểm thành phần từng môn.</p>
-          </div>
+        <li class="feature-item reveal" data-delay="90">
+          <span class="feature-icon" aria-hidden="true">
+            <i class="ph ph-chart-bar"></i>
+          </span>
+          <h3>Điểm số</h3>
+          <p>Điểm tổng và điểm thành phần.</p>
         </li>
-        <li class="feature-item reveal" data-delay="120">
-          <span class="feature-icon" aria-hidden="true">👤</span>
-          <div>
-            <h3>Hồ sơ sinh viên</h3>
-            <p>Thông tin cá nhân và cố vấn học tập.</p>
-          </div>
+        <li class="feature-item reveal" data-delay="140">
+          <span class="feature-icon" aria-hidden="true">
+            <i class="ph ph-identification-card"></i>
+          </span>
+          <h3>Hồ sơ sinh viên</h3>
+          <p>Thông tin cá nhân &amp; cố vấn.</p>
         </li>
-        <li class="feature-item reveal" data-delay="160">
-          <span class="feature-icon" aria-hidden="true">⚡</span>
-          <div>
-            <h3>Cache cục bộ</h3>
-            <p>Mở lại nhanh, ít phụ thuộc mạng.</p>
-          </div>
+        <li class="feature-item reveal" data-delay="190">
+          <span class="feature-icon" aria-hidden="true">
+            <i class="ph ph-lightning"></i>
+          </span>
+          <h3>Cache cục bộ</h3>
+          <p>Mở lại nhanh, ít phụ thuộc mạng.</p>
         </li>
       </ul>
     </section>
 
     <section class="download" id="download">
-      <div class="download-panel reveal">
-        <h2>Tải ứng dụng</h2>
-        <p>Cả Android và iOS nằm trong cùng thư mục Google Drive.</p>
-        <div class="download-actions">
-          <a class="btn btn-primary btn-wide" href="https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing" target="_blank" rel="noopener noreferrer">
-            Mở thư mục tải app
+      <div class="download-shell reveal">
+        <div class="download-intro">
+          <p class="section-kicker">
+            <i class="ph ph-package" aria-hidden="true"></i>
+            Tải xuống
+          </p>
+          <h2>Một thư mục — đủ Android &amp; iOS</h2>
+          <p>Lấy bản cài đặt chính thức từ Google Drive, rồi làm theo hướng dẫn từng nền tảng.</p>
+          <a class="btn btn-primary" href="https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing" target="_blank" rel="noopener noreferrer">
+            <i class="ph-fill ph-folder-simple-dashed" aria-hidden="true"></i>
+            <span>Mở thư mục tải app</span>
           </a>
         </div>
+
         <div class="os-grid">
           <article class="os-block">
-            <h3>Android</h3>
+            <div class="os-head">
+              <span class="os-badge android" aria-hidden="true"><i class="ph-fill ph-android-logo"></i></span>
+              <h3>Android</h3>
+            </div>
             <ol>
-              <li>Tải file <strong>.apk</strong> từ Drive.</li>
-              <li>Cho phép cài từ nguồn không xác định nếu được hỏi.</li>
-              <li>Mở app và đăng nhập tài khoản VLUTE.</li>
+              <li>
+                <i class="ph ph-file-arrow-down" aria-hidden="true"></i>
+                <span>Tải file <strong>.apk</strong> từ Drive.</span>
+              </li>
+              <li>
+                <i class="ph ph-shield-check" aria-hidden="true"></i>
+                <span>Cho phép cài từ nguồn không xác định nếu được hỏi.</span>
+              </li>
+              <li>
+                <i class="ph ph-sign-in" aria-hidden="true"></i>
+                <span>Mở app và đăng nhập tài khoản VLUTE.</span>
+              </li>
             </ol>
           </article>
+
           <article class="os-block">
-            <h3>iOS</h3>
+            <div class="os-head">
+              <span class="os-badge ios" aria-hidden="true"><i class="ph-fill ph-apple-logo"></i></span>
+              <h3>iOS</h3>
+            </div>
             <ol>
-              <li>Tải file iOS từ Drive.</li>
-              <li>Làm theo video cấp chứng chỉ bên dưới.</li>
-              <li>Mở app và đăng nhập tài khoản VLUTE.</li>
+              <li>
+                <i class="ph ph-file-arrow-down" aria-hidden="true"></i>
+                <span>Tải file iOS từ Drive.</span>
+              </li>
+              <li>
+                <i class="ph ph-seal-check" aria-hidden="true"></i>
+                <span>Làm theo video cấp chứng chỉ bên dưới.</span>
+              </li>
+              <li>
+                <i class="ph ph-sign-in" aria-hidden="true"></i>
+                <span>Mở app và đăng nhập tài khoản VLUTE.</span>
+              </li>
             </ol>
           </article>
         </div>
@@ -155,28 +226,47 @@
 
     <section class="ios-guide" id="ios-guide">
       <div class="section-head reveal">
-        <h2>Hướng dẫn cài iOS</h2>
-        <p>Video đầy đủ các bước cài đặt và cấp chứng chỉ cơ bản cho app iOS đơn giản.</p>
+        <p class="section-kicker">
+          <i class="ph ph-device-mobile" aria-hidden="true"></i>
+          iOS
+        </p>
+        <h2>Hướng dẫn cài &amp; cấp chứng chỉ</h2>
+        <p>Video đầy đủ các bước cơ bản cho một app iOS đơn giản.</p>
       </div>
-      <div class="video-wrap reveal">
-        <a class="video-card" href="https://youtu.be/WMdaxojL4m4?si=0cXPruxI6c-fnmc2" target="_blank" rel="noopener noreferrer">
-          <img src="https://img.youtube.com/vi/WMdaxojL4m4/hqdefault.jpg" alt="Xem video hướng dẫn cài iOS trên YouTube" width="480" height="360" loading="lazy">
-          <span class="play-badge">▶ Xem trên YouTube</span>
-        </a>
-      </div>
+
+      <a class="video-card reveal" href="https://youtu.be/WMdaxojL4m4?si=0cXPruxI6c-fnmc2" target="_blank" rel="noopener noreferrer">
+        <img src="https://img.youtube.com/vi/WMdaxojL4m4/hqdefault.jpg" alt="Xem video hướng dẫn cài iOS trên YouTube" width="480" height="360" loading="lazy">
+        <span class="video-veil" aria-hidden="true"></span>
+        <span class="play-badge">
+          <i class="ph-fill ph-play" aria-hidden="true"></i>
+          <span>Xem trên YouTube</span>
+        </span>
+      </a>
     </section>
   </main>
 
   <footer class="site-footer">
-    <img src="assets/logo-vlute.png" alt="" width="40" height="40">
-    <p><strong>ST VLUTE</strong> — dành cho sinh viên VLUTE</p>
-    <p class="footer-links">
-      <a href="https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing" target="_blank" rel="noopener noreferrer">Tải app</a>
-      ·
-      <a href="https://youtu.be/WMdaxojL4m4?si=0cXPruxI6c-fnmc2" target="_blank" rel="noopener noreferrer">Hướng dẫn iOS</a>
-      ·
-      <a href="https://github.com/vietphamhoccode/st-vlute" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </p>
+    <div class="footer-brand">
+      <img src="assets/logo-vlute.png" alt="" width="42" height="42">
+      <div>
+        <strong>ST VLUTE</strong>
+        <span>Trường Đại Học Công Nghệ Kỹ Thuật Vĩnh Long</span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing" target="_blank" rel="noopener noreferrer">
+        <i class="ph ph-download-simple" aria-hidden="true"></i>
+        Tải app
+      </a>
+      <a href="https://youtu.be/WMdaxojL4m4?si=0cXPruxI6c-fnmc2" target="_blank" rel="noopener noreferrer">
+        <i class="ph ph-play-circle" aria-hidden="true"></i>
+        Hướng dẫn iOS
+      </a>
+      <a href="https://github.com/vietphamhoccode/st-vlute" target="_blank" rel="noopener noreferrer">
+        <i class="ph ph-github-logo" aria-hidden="true"></i>
+        GitHub
+      </a>
+    </div>
   </footer>
 
   <noscript>

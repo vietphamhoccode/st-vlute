@@ -8,7 +8,7 @@
 **Một ứng dụng — đủ mọi thứ bạn cần trên điện thoại**
 
 Ứng dụng di động dành cho sinh viên
-**Trường Đại học Sư phạm Kỹ thuật Vĩnh Long (VLUTE)**
+**Trường Đại Học Công Nghệ Kỹ Thuật Vĩnh Long (VLUTE)**
 
 <br>
 
