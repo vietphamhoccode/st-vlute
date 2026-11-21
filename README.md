@@ -24,8 +24,21 @@
 
 [![Tải ứng dụng](https://img.shields.io/badge/⬇%20Tải%20Android%20%26%20iOS-Google%20Drive-1B8A4A?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing)
 [![Landing](https://img.shields.io/badge/🌐%20Landing%20Page-3D%20Logo-0B3D2E?style=for-the-badge)](./index.html)
+[![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-222?style=for-the-badge&logo=github)](https://vietphamhoccode.github.io/st-vlute/)
 
 </div>
+
+## Website (GitHub Pages)
+
+Site đã đẩy lên nhánh `gh-pages`. Bật 1 lần trên GitHub:
+
+1. Vào **Settings → Pages**
+2. **Build and deployment → Source**: chọn **Deploy from a branch**
+3. Branch: **`gh-pages`** / folder: **`/` (root)** → **Save**
+
+Sau vài phút mở: **https://vietphamhoccode.github.io/st-vlute/**
+
+> Hoặc Source = **GitHub Actions** (workflow `Deploy GitHub Pages` đã có sẵn).
 
 ---
 
