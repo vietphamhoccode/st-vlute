@@ -288,15 +288,17 @@
     }
     if (!actors.student || !actors.engineer || !actors.bot) return;
 
-    var groundY = lowPower ? [58, 74] : [50, 80];
+    var groundY = lowPower ? [62, 78] : [58, 82];
+    // Climb along side/edge nodes so the hero stay readable
     var climbSpots = [
-      { x: 35, y: 48 },
-      { x: 63, y: 45 },
-      { x: 47, y: 46 },
-      { x: 53, y: 52 },
-      { x: 50, y: 40 },
-      { x: 22, y: 36 },
-      { x: 78, y: 34 }
+      { x: 10, y: 38 },
+      { x: 18, y: 32 },
+      { x: 28, y: 42 },
+      { x: 72, y: 40 },
+      { x: 82, y: 34 },
+      { x: 90, y: 42 },
+      { x: 8, y: 52 },
+      { x: 92, y: 54 }
     ];
     var chatLock = null;
 
@@ -439,14 +441,17 @@
     };
 
     function wander(a) {
-      var x = rand(6, 94);
-      // prefer crossing the screen left↔right
-      if (Math.random() > 0.35) {
-        x = a.x < 50 ? rand(62, 94) : rand(6, 38);
+      // Cross the stage left↔right; stay mostly in lower/side lanes
+      var x;
+      if (Math.random() > 0.3) {
+        x = a.x < 50 ? rand(68, 94) : rand(6, 32);
+      } else {
+        x = rand(6, 94);
       }
       var y = rand(groundY[0], groundY[1]);
-      if (a.name === "bot" && Math.random() > 0.55) {
-        y = rand(28, 58);
+      if (a.name === "bot" && Math.random() > 0.5) {
+        y = rand(40, 62);
+        x = Math.random() > 0.5 ? rand(6, 28) : rand(72, 94);
       }
       return moveTo(a, x, y, {});
     }
@@ -530,22 +535,19 @@
         a.busy = true;
         try {
           var roll = Math.random();
-          var nearby = findNearby(a, 26);
-          if (nearby && roll < 0.34) {
+          var nearby = findNearby(a, 28);
+          if (nearby && roll < 0.38) {
             await chatWith(a, nearby);
-          } else if (roll < 0.55) {
+          } else if (roll < 0.62) {
             await wander(a);
-          } else if (roll < 0.78) {
+            if (Math.random() > 0.55) await thinkAlone(a);
+          } else if (roll < 0.8) {
             await climb(a);
-          } else if (roll < 0.9) {
-            await wander(a);
-            await thinkAlone(a);
           } else {
             await thinkAlone(a);
             await wander(a);
           }
-          // small pause so motion breathes
-          await wait(rand(280, 900));
+          await wait(rand(220, 700));
         } catch (e) {
         } finally {
           a.busy = false;
@@ -553,10 +555,10 @@
       }
     }
 
-    // place them apart, then each lives independently
-    moveTo(actors.student, 12, 70, { duration: 20 });
-    moveTo(actors.engineer, 86, 64, { duration: 20, faceLeft: true });
-    moveTo(actors.bot, 48, 42, { duration: 20, climb: true, keepClimb: true });
+    // place them apart on the sides, then each lives independently
+    moveTo(actors.student, 10, 72, { duration: 20 });
+    moveTo(actors.engineer, 88, 68, { duration: 20, faceLeft: true });
+    moveTo(actors.bot, 84, 38, { duration: 20, climb: true, keepClimb: true });
 
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) {
