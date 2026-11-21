@@ -21,6 +21,7 @@
 ### 🎉 Đã hỗ trợ cả Android & iOS
 
 [![Tải ứng dụng](https://img.shields.io/badge/⬇%20Tải%20Android%20%26%20iOS-Google%20Drive-1B8A4A?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/drive/folders/19b1QsKBzG7CpCK2fog-W76dGSH0c6qWu?usp=sharing)
+[![Landing](https://img.shields.io/badge/🌐%20Landing%20Page-3D%20Logo-0B3D2E?style=for-the-badge)](./index.html)
 
 </div>
 
