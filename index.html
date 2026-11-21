@@ -65,7 +65,7 @@
         </g>
       </svg>
 
-      <!-- 2D characters — short film theater -->
+      <!-- 2D characters — free roam / climb / chat -->
       <div class="char char-student" data-actor="student" style="left:8%;top:62%">
         <div class="bubble bubble-say" data-bubble="say" hidden></div>
         <div class="bubble bubble-think" data-bubble="think" hidden></div>
@@ -226,30 +226,9 @@
       </div>
 
       <div class="hero-visual reveal" data-delay="80">
-        <div class="logo-scene" id="logo-scene" aria-label="Logo VLUTE 3D tương tác">
-          <div class="logo-orbit logo-orbit-a"></div>
-          <div class="logo-orbit logo-orbit-b"></div>
-          <div class="logo-orbit logo-orbit-c"></div>
-          <div class="logo-sparks" aria-hidden="true">
-            <span></span><span></span><span></span><span></span>
-          </div>
-
-          <div class="logo-rig" id="logo-rig">
-            <div class="logo-shadow"></div>
-            <div class="logo-plate logo-plate-back"></div>
-            <div class="logo-plate logo-plate-mid"></div>
-            <div class="logo-core">
-              <img class="logo-img" src="assets/logo-vlute.png" alt="Logo VLUTE" width="220" height="220" decoding="async">
-              <div class="logo-shine"></div>
-              <div class="logo-rim"></div>
-            </div>
-            <div class="logo-flare"></div>
-          </div>
+        <div class="logo-static" aria-hidden="false">
+          <img src="assets/logo-vlute.png" alt="Logo VLUTE" width="200" height="200" decoding="async">
         </div>
-        <p class="stage-hint">
-          <i class="ph ph-cube-focus" aria-hidden="true"></i>
-          <span>Chạm để xoay 3D</span>
-        </p>
       </div>
     </section>
 
@@ -539,8 +518,6 @@
   <noscript>
     <style>
       .reveal { opacity: 1 !important; transform: none !important; }
-      .logo-rig { transform: none !important; }
-      .stage-hint { display: none; }
     </style>
   </noscript>
   <script src="js/landing.js" defer></script>

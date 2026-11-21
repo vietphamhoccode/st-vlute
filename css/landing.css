@@ -350,13 +350,33 @@ button, a { -webkit-tap-highlight-color: transparent; }
   animation-duration: 0.55s;
 }
 
-.char.face-left svg {
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
+.char.is-climbing {
+  z-index: 3;
 }
 
-.char.face-left .bubble,
-.char.face-left .char-label {
+.char.is-climbing .char-body,
+.char.is-climbing .bot-body {
+  -webkit-animation: climbBob 0.7s ease-in-out infinite;
+  animation: climbBob 0.7s ease-in-out infinite;
+}
+
+@-webkit-keyframes climbBob {
+  0%, 100% { -webkit-transform: translateY(0) rotate(-4deg); transform: translateY(0) rotate(-4deg); }
+  50% { -webkit-transform: translateY(-10px) rotate(4deg); transform: translateY(-10px) rotate(4deg); }
+}
+@keyframes climbBob {
+  0%, 100% { -webkit-transform: translateY(0) rotate(-4deg); transform: translateY(0) rotate(-4deg); }
+  50% { -webkit-transform: translateY(-10px) rotate(4deg); transform: translateY(-10px) rotate(4deg); }
+}
+
+.char.is-acting .arm-phone,
+.char.is-acting .arm-tablet,
+.char.is-acting .bot-arm {
+  -webkit-animation-duration: 0.7s;
+  animation-duration: 0.7s;
+}
+
+.char.face-left svg {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }
@@ -590,9 +610,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 html.anim-paused .bg-aurora,
 html.anim-paused .glow,
-html.anim-paused .logo-orbit,
-html.anim-paused .logo-shine,
-html.anim-paused .logo-rig,
 html.anim-paused .st-tail,
 html.anim-paused .tech-grid,
 html.anim-paused .data-rain span,
@@ -627,19 +644,6 @@ html.low-power .hud-bits,
 html.low-power .circuit-svg .w3,
 html.low-power .circuit-svg .w4 {
   display: none !important;
-}
-
-html.low-power .logo-orbit-b,
-html.low-power .logo-orbit-c,
-html.low-power .logo-sparks,
-html.low-power .logo-shine,
-html.low-power .logo-flare {
-  display: none !important;
-}
-
-html.low-power .logo-orbit-a {
-  -webkit-animation-duration: 28s;
-  animation-duration: 28s;
 }
 
 html.low-power .char svg {
@@ -776,16 +780,36 @@ main,
   -ms-flex-align: center;
   align-items: center;
   gap: 0.85rem;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  touch-action: none;
+}
+
+.logo-static {
+  width: min(52vw, 240px);
+  aspect-ratio: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.2), transparent 45%),
+    linear-gradient(165deg, #0b0d10 0%, #171b22 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 22px 50px rgba(7, 53, 40, 0.22);
+  overflow: hidden;
+}
+
+.logo-static img {
+  width: 72%;
+  height: auto;
 }
 
 .eyebrow,
-.section-kicker,
-.stage-hint {
+.section-kicker {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -805,8 +829,7 @@ main,
 }
 
 .eyebrow i,
-.section-kicker i,
-.stage-hint i {
+.section-kicker i {
   font-size: 1.15rem;
   line-height: 1;
 }
@@ -1000,244 +1023,6 @@ main,
 .platform-row i {
   font-size: 1.05rem;
   color: var(--green-deep);
-}
-
-/* 3D Logo */
-.logo-scene {
-  position: relative;
-  width: min(88vw, 460px);
-  height: min(88vw, 460px);
-  -webkit-perspective: 1100px;
-  perspective: 1100px;
-  -webkit-perspective-origin: 50% 45%;
-  perspective-origin: 50% 45%;
-}
-
-.logo-orbit {
-  position: absolute;
-  inset: 7%;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(24, 143, 79, 0.38);
-  pointer-events: none;
-  -webkit-animation: spin 20s linear infinite;
-  animation: spin 20s linear infinite;
-}
-
-.logo-orbit::before {
-  content: "";
-  position: absolute;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  top: 0;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  background: var(--green-bright);
-  box-shadow: 0 0 18px rgba(43, 182, 115, 0.7);
-}
-
-.logo-orbit-b {
-  inset: 15%;
-  border-color: rgba(18, 58, 107, 0.28);
-  -webkit-animation-duration: 14s;
-  animation-duration: 14s;
-  -webkit-animation-direction: reverse;
-  animation-direction: reverse;
-}
-.logo-orbit-b::before {
-  background: var(--navy);
-  box-shadow: 0 0 16px rgba(18, 58, 107, 0.55);
-}
-
-.logo-orbit-c {
-  inset: 23%;
-  border-style: solid;
-  border-color: rgba(226, 59, 53, 0.2);
-  -webkit-animation-duration: 10s;
-  animation-duration: 10s;
-}
-.logo-orbit-c::before {
-  width: 8px;
-  height: 8px;
-  background: var(--flame);
-  box-shadow: 0 0 14px rgba(226, 59, 53, 0.55);
-}
-
-.logo-sparks span {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 0 12px rgba(43, 182, 115, 0.8);
-  -webkit-animation: spark 3.6s ease-in-out infinite;
-  animation: spark 3.6s ease-in-out infinite;
-}
-.logo-sparks span:nth-child(1) { left: 18%; top: 28%; }
-.logo-sparks span:nth-child(2) { right: 16%; top: 34%; -webkit-animation-delay: -0.8s; animation-delay: -0.8s; }
-.logo-sparks span:nth-child(3) { left: 22%; bottom: 24%; -webkit-animation-delay: -1.4s; animation-delay: -1.4s; }
-.logo-sparks span:nth-child(4) { right: 20%; bottom: 20%; -webkit-animation-delay: -2s; animation-delay: -2s; }
-
-@-webkit-keyframes spark {
-  0%, 100% { opacity: 0.2; -webkit-transform: scale(0.7); transform: scale(0.7); }
-  50% { opacity: 1; -webkit-transform: scale(1.2); transform: scale(1.2); }
-}
-@keyframes spark {
-  0%, 100% { opacity: 0.2; -webkit-transform: scale(0.7); transform: scale(0.7); }
-  50% { opacity: 1; -webkit-transform: scale(1.2); transform: scale(1.2); }
-}
-
-@-webkit-keyframes spin { to { -webkit-transform: rotate(360deg); transform: rotate(360deg); } }
-@keyframes spin { to { -webkit-transform: rotate(360deg); transform: rotate(360deg); } }
-
-.logo-rig {
-  position: absolute;
-  inset: 17%;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.logo-shadow,
-.logo-plate,
-.logo-core,
-.logo-flare {
-  position: absolute;
-  inset: 0;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-}
-
-.logo-shadow {
-  inset: 12% 8% -10%;
-  background: radial-gradient(ellipse at center, rgba(7, 53, 40, 0.4), transparent 70%);
-  filter: blur(20px);
-  -webkit-filter: blur(20px);
-  -webkit-transform: translateZ(-70px) rotateX(72deg) scale(0.95);
-  transform: translateZ(-70px) rotateX(72deg) scale(0.95);
-}
-
-.logo-plate {
-  border-radius: 32px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.58), rgba(231, 247, 238, 0.35));
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow: var(--shadow);
-}
-
-.logo-plate-back {
-  -webkit-transform: translateZ(-34px) scale(0.93);
-  transform: translateZ(-34px) scale(0.93);
-  background: linear-gradient(160deg, rgba(18, 58, 107, 0.2), rgba(24, 143, 79, 0.22));
-}
-
-.logo-plate-mid {
-  -webkit-transform: translateZ(-14px) scale(0.97);
-  transform: translateZ(-14px) scale(0.97);
-  opacity: 0.9;
-}
-
-.logo-core {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  border-radius: 32px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.28), transparent 42%),
-    linear-gradient(165deg, #0b0d10 0%, #171b22 100%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow:
-    0 28px 70px rgba(7, 53, 40, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  -webkit-transform: translateZ(28px);
-  transform: translateZ(28px);
-}
-
-.logo-img {
-  width: 74%;
-  height: auto;
-  -webkit-transform: translateZ(10px);
-  transform: translateZ(10px);
-  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.4));
-  -webkit-filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.4));
-  pointer-events: none;
-}
-
-.logo-shine {
-  position: absolute;
-  inset: -45%;
-  background: linear-gradient(
-    115deg,
-    transparent 36%,
-    rgba(255, 255, 255, 0.08) 46%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(255, 255, 255, 0.08) 54%,
-    transparent 64%
-  );
-  -webkit-transform: translateZ(34px) rotate(18deg);
-  transform: translateZ(34px) rotate(18deg);
-  -webkit-animation: sheen 4.6s ease-in-out infinite;
-  animation: sheen 4.6s ease-in-out infinite;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-@-webkit-keyframes sheen {
-  0%, 28% { -webkit-transform: translateZ(34px) translateX(-42%) rotate(18deg); transform: translateZ(34px) translateX(-42%) rotate(18deg); opacity: 0; }
-  44% { opacity: 0.95; }
-  62%, 100% { -webkit-transform: translateZ(34px) translateX(42%) rotate(18deg); transform: translateZ(34px) translateX(42%) rotate(18deg); opacity: 0; }
-}
-@keyframes sheen {
-  0%, 28% { -webkit-transform: translateZ(34px) translateX(-42%) rotate(18deg); transform: translateZ(34px) translateX(-42%) rotate(18deg); opacity: 0; }
-  44% { opacity: 0.95; }
-  62%, 100% { -webkit-transform: translateZ(34px) translateX(42%) rotate(18deg); transform: translateZ(34px) translateX(42%) rotate(18deg); opacity: 0; }
-}
-
-.logo-rim {
-  position: absolute;
-  inset: 12px;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  pointer-events: none;
-  -webkit-transform: translateZ(30px);
-  transform: translateZ(30px);
-}
-
-.logo-flare {
-  inset: 18%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(43, 182, 115, 0.38), transparent 70%);
-  filter: blur(22px);
-  -webkit-filter: blur(22px);
-  -webkit-transform: translateZ(46px);
-  transform: translateZ(46px);
-  opacity: 0.55;
-  pointer-events: none;
-  -webkit-animation: pulse 3.2s ease-in-out infinite;
-  animation: pulse 3.2s ease-in-out infinite;
-}
-
-@-webkit-keyframes pulse {
-  0%, 100% { opacity: 0.3; -webkit-transform: translateZ(46px) scale(0.9); transform: translateZ(46px) scale(0.9); }
-  50% { opacity: 0.72; -webkit-transform: translateZ(46px) scale(1.1); transform: translateZ(46px) scale(1.1); }
-}
-@keyframes pulse {
-  0%, 100% { opacity: 0.3; -webkit-transform: translateZ(46px) scale(0.9); transform: translateZ(46px) scale(0.9); }
-  50% { opacity: 0.72; -webkit-transform: translateZ(46px) scale(1.1); transform: translateZ(46px) scale(1.1); }
-}
-
-.stage-hint {
-  margin: 0;
-  font-size: 0.86rem;
-  color: var(--muted);
-  opacity: 0.9;
 }
 
 /* Sections */
@@ -1853,14 +1638,6 @@ main,
     font-size: 0.78rem;
   }
 
-  .logo-scene {
-    width: min(58vw, 240px);
-    height: min(58vw, 240px);
-  }
-
-  .logo-rig { inset: 14%; }
-  .logo-core,
-  .logo-plate { border-radius: 22px; }
 
   /* Mobile: remove milky white haze */
   .bg-waves,
@@ -1907,19 +1684,12 @@ main,
 
   .eyebrow,
   .hero-lead,
-  .stage-hint {
-    color: #355649;
-  }
 
   .meaning-full {
     color: #3d5a4c;
     border-color: rgba(7, 53, 40, 0.14);
   }
 
-  .stage-hint {
-    font-size: 0.78rem;
-    margin-top: 0.15rem;
-  }
 
   .features,
   .download,
@@ -2085,10 +1855,6 @@ main,
 
   .btn { min-height: 48px; font-size: 0.92rem; }
 
-  .logo-scene {
-    width: min(52vw, 210px);
-    height: min(52vw, 210px);
-  }
 
   .hero-visual {
     padding: 0.25rem 0 0.1rem;
@@ -2104,10 +1870,6 @@ main,
   .bg-orbs i,
   .mesh,
   .glow,
-  .logo-orbit,
-  .logo-shine,
-  .logo-flare,
-  .logo-sparks span,
   .reveal,
   .btn,
   .video-card,
@@ -2120,8 +1882,6 @@ main,
     transition: none !important;
   }
   .reveal { opacity: 1; -webkit-transform: none; transform: none; }
-  .logo-rig { -webkit-transform: none !important; transform: none !important; }
-  .stage-hint { display: none; }
   .st-morph .st-tail {
     max-width: 0 !important;
     opacity: 0 !important;
