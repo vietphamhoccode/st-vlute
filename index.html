@@ -52,43 +52,28 @@
   </header>
 
   <main id="main">
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
     <section class="hero" id="hero">
-      <div class="hero-visual reveal">
-        <div class="logo-scene" id="logo-scene" aria-label="Logo VLUTE 3D tương tác">
-          <div class="logo-orbit logo-orbit-a"></div>
-          <div class="logo-orbit logo-orbit-b"></div>
-          <div class="logo-orbit logo-orbit-c"></div>
-          <div class="logo-sparks" aria-hidden="true">
-            <span></span><span></span><span></span><span></span>
-          </div>
-
-          <div class="logo-rig" id="logo-rig">
-            <div class="logo-shadow"></div>
-            <div class="logo-plate logo-plate-back"></div>
-            <div class="logo-plate logo-plate-mid"></div>
-            <div class="logo-core">
-              <img class="logo-img" src="assets/logo-vlute.png" alt="Logo VLUTE" width="220" height="220" decoding="async">
-              <div class="logo-shine"></div>
-              <div class="logo-rim"></div>
-            </div>
-            <div class="logo-flare"></div>
-          </div>
-        </div>
-        <p class="stage-hint">
-          <i class="ph ph-cube-focus" aria-hidden="true"></i>
-          <span>Kéo / chạm để xoay logo 3D</span>
-        </p>
-      </div>
-
-      <div class="hero-copy reveal" data-delay="80">
+      <div class="hero-copy reveal">
         <p class="eyebrow">
           <i class="ph ph-graduation-cap" aria-hidden="true"></i>
-          Trường Đại Học Công Nghệ Kỹ Thuật Vĩnh Long
+          <span>Trường Đại Học Công Nghệ Kỹ Thuật Vĩnh Long</span>
         </p>
-        <h1 class="brand-title">
-          <span class="brand-line">ST</span>
+        <h1 class="brand-title" aria-label="ST VLUTE — Students Vinh Long University of Technology and Engineering">
+          <span class="st-morph" id="st-morph" aria-hidden="true">
+            <span class="st-core">ST</span>
+            <span class="st-tail" id="st-tail">udents</span>
+          </span>
           <span class="brand-line accent">VLUTE</span>
         </h1>
+        <p class="brand-meaning" id="brand-meaning">
+          <span class="meaning-full">
+            <strong>ST VLUTE</strong>
+            =
+            Students Vinh Long University of Technology and Engineering
+          </span>
+        </p>
         <p class="hero-lead">
           Thời khóa biểu, điểm số và hồ sơ học tập — gọn trong một ứng dụng trên điện thoại.
         </p>
@@ -115,9 +100,36 @@
           </li>
           <li>
             <i class="ph ph-browsers" aria-hidden="true"></i>
-            <span>Mọi trình duyệt</span>
+            <span>Web</span>
           </li>
         </ul>
+      </div>
+
+      <div class="hero-visual reveal" data-delay="80">
+        <div class="logo-scene" id="logo-scene" aria-label="Logo VLUTE 3D tương tác">
+          <div class="logo-orbit logo-orbit-a"></div>
+          <div class="logo-orbit logo-orbit-b"></div>
+          <div class="logo-orbit logo-orbit-c"></div>
+          <div class="logo-sparks" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+
+          <div class="logo-rig" id="logo-rig">
+            <div class="logo-shadow"></div>
+            <div class="logo-plate logo-plate-back"></div>
+            <div class="logo-plate logo-plate-mid"></div>
+            <div class="logo-core">
+              <img class="logo-img" src="assets/logo-vlute.png" alt="Logo VLUTE" width="220" height="220" decoding="async">
+              <div class="logo-shine"></div>
+              <div class="logo-rim"></div>
+            </div>
+            <div class="logo-flare"></div>
+          </div>
+        </div>
+        <p class="stage-hint">
+          <i class="ph ph-cube-focus" aria-hidden="true"></i>
+          <span>Chạm để xoay 3D</span>
+        </p>
       </div>
     </section>
 

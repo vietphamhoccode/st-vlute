@@ -256,11 +256,69 @@
     });
   }
 
+  /* ---------- Scroll progress (thin Y bar) ---------- */
+  function initScrollProgress() {
+    var bar = document.querySelector(".scroll-progress span");
+    if (!bar) return;
+
+    function update() {
+      var doc = document.documentElement;
+      var scrollTop = window.pageYOffset || doc.scrollTop || 0;
+      var height = (doc.scrollHeight - doc.clientHeight) || 1;
+      var pct = Math.max(0, Math.min(100, (scrollTop / height) * 100));
+      bar.style.width = pct.toFixed(2) + "%";
+    }
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+  }
+
+  /* ---------- Students <-> ST morph ---------- */
+  function initStMorph() {
+    var morph = document.getElementById("st-morph");
+    var meaning = document.querySelector(".meaning-full");
+    if (!morph) return;
+
+    if (reduceMotion) {
+      morph.classList.add("is-compact");
+      if (meaning) meaning.classList.add("is-on");
+      return;
+    }
+
+    var expanded = true;
+    morph.classList.add("is-expanding");
+    if (meaning) meaning.classList.add("is-on");
+
+    function cycle() {
+      if (expanded) {
+        // Students -> ST (rút gọn)
+        morph.classList.remove("is-expanding");
+        morph.classList.add("is-compact");
+        expanded = false;
+      } else {
+        // ST -> Students (chạy ra)
+        morph.classList.remove("is-compact");
+        morph.classList.add("is-expanding");
+        expanded = true;
+      }
+    }
+
+    // Start with Students, then loop compact/expand
+    window.setTimeout(function loop() {
+      cycle();
+      var hold = expanded ? 2800 : 2000;
+      window.setTimeout(loop, hold);
+    }, 1600);
+  }
+
   /* ---------- Boot ---------- */
   function boot() {
     initReveal();
     initParticles();
     initLogo3D();
+    initScrollProgress();
+    initStMorph();
   }
 
   if (document.readyState === "loading") {
